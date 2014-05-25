@@ -1,5 +1,7 @@
 # Cache Component
 
+[![Build Status](https://secure.travis-ci.org/reactphp/cache.png?branch=master)](http://travis-ci.org/reactphp/cache)
+
 Promised cache interface.
 
 The cache component provides a promise-based cache interface and an in-memory
