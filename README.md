@@ -1,5 +1,7 @@
 # Cache Component
 
+[![Build Status](https://secure.travis-ci.org/reactphp/cache.png?branch=master)](http://travis-ci.org/reactphp/cache)
+
 Promised cache interface.
 
 The cache component provides a promise-based cache interface and an in-memory
@@ -9,10 +11,11 @@ against the interface and third parties to provide alternate implementations.
 ## Basic usage
 
 ### get
-
+```php
     $cache
         ->get('foo')
         ->then('var_dump');
+```
 
 This example fetches the value of the key `foo` and passes it to the
 `var_dump` function. You can use any of the composition provided by
@@ -21,8 +24,9 @@ This example fetches the value of the key `foo` and passes it to the
 If the key `foo` does not exist, the promise will be rejected.
 
 ### set
-
+```php
     $cache->set('foo', 'bar');
+```
 
 This example eventually sets the value of the key `foo` to `bar`. If it
 already exists, it is overridden. No guarantees are made as to when the cache
@@ -30,8 +34,9 @@ value is set. If the cache implementation has to go over the network to store
 it, it may take a while.
 
 ### remove
-
+```php
     $cache->remove('foo');
+```
 
 This example eventually removes the key `foo` from the cache. As with `set`,
 this may not happen instantly.
@@ -43,11 +48,12 @@ this may not happen instantly.
 A common use case of caches is to attempt fetching a cached value and as a
 fallback retrieve it from the original data source if not found. Here is an
 example of that:
-
+```php
     $cache
         ->get('foo')
         ->then(null, 'getFooFromDb')
         ->then('var_dump');
+```
 
 First an attempt is made to retrieve the value of `foo`. A promise rejection
 handler of the function `getFooFromDb` is registered. `getFooFromDb` is a
@@ -62,7 +68,7 @@ chain will correctly fall back, and provide the value in both cases.
 
 To expand on the fallback get example, often you want to set the value on the
 cache after fetching it from the data source.
-
+```php
     $cache
         ->get('foo')
         ->then(null, array($this, 'getAndCacheFooFromDb'))
@@ -81,6 +87,6 @@ cache after fetching it from the data source.
 
         return $foo;
     }
-
+```
 By using chaining you can easily conditionally cache the value if it is
 fetched from the database.
