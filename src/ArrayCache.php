@@ -6,8 +6,14 @@ use React\Promise;
 
 class ArrayCache implements CacheInterface
 {
-    private $data = array();
+    /**
+     * @var array
+     */
+    protected $data = array();
 
+    /**
+     * {@inheritdoc}
+     */
     public function get($key)
     {
         if (!isset($this->data[$key])) {
@@ -17,11 +23,17 @@ class ArrayCache implements CacheInterface
         return Promise\resolve($this->data[$key]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function set($key, $value)
     {
         $this->data[$key] = $value;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function remove($key)
     {
         unset($this->data[$key]);

@@ -8,7 +8,14 @@
         "react/promise": "~2.0"
     },
     "autoload": {
-        "psr-4": { "React\\Cache\\": "src\\" }
+        "psr-4": {
+            "React\\Cache\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "React\\Tests\\Cache\\": "tests"
+        }
     },
     "extra": {
         "branch-alias": {

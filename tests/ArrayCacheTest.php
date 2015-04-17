@@ -6,14 +6,19 @@ use React\Cache\ArrayCache;
 
 class ArrayCacheTest extends TestCase
 {
-    private $cache;
+    /**
+     * @var ArrayCache
+     */
+    protected $cache;
 
     public function setUp()
     {
         $this->cache = new ArrayCache();
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getShouldRejectPromiseForNonExistentKey()
     {
         $this->cache
@@ -24,13 +29,16 @@ class ArrayCacheTest extends TestCase
             );
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function setShouldSetKey()
     {
         $this->cache
             ->set('foo', 'bar');
 
         $success = $this->createCallableMock();
+
         $success
             ->expects($this->once())
             ->method('__invoke')
@@ -41,7 +49,9 @@ class ArrayCacheTest extends TestCase
             ->then($success);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function removeShouldRemoveKey()
     {
         $this->cache

@@ -12,9 +12,9 @@ against the interface and third parties to provide alternate implementations.
 
 ### get
 ```php
-    $cache
-        ->get('foo')
-        ->then('var_dump');
+$cache
+    ->get('foo')
+    ->then('var_dump');
 ```
 
 This example fetches the value of the key `foo` and passes it to the
@@ -25,7 +25,7 @@ If the key `foo` does not exist, the promise will be rejected.
 
 ### set
 ```php
-    $cache->set('foo', 'bar');
+$cache->set('foo', 'bar');
 ```
 
 This example eventually sets the value of the key `foo` to `bar`. If it
@@ -35,7 +35,7 @@ it, it may take a while.
 
 ### remove
 ```php
-    $cache->remove('foo');
+$cache->remove('foo');
 ```
 
 This example eventually removes the key `foo` from the cache. As with `set`,
@@ -49,10 +49,10 @@ A common use case of caches is to attempt fetching a cached value and as a
 fallback retrieve it from the original data source if not found. Here is an
 example of that:
 ```php
-    $cache
-        ->get('foo')
-        ->then(null, 'getFooFromDb')
-        ->then('var_dump');
+$cache
+    ->get('foo')
+    ->then(null, 'getFooFromDb')
+    ->then('var_dump');
 ```
 
 First an attempt is made to retrieve the value of `foo`. A promise rejection
@@ -69,24 +69,24 @@ chain will correctly fall back, and provide the value in both cases.
 To expand on the fallback get example, often you want to set the value on the
 cache after fetching it from the data source.
 ```php
-    $cache
+$cache
+    ->get('foo')
+    ->then(null, array($this, 'getAndCacheFooFromDb'))
+    ->then('var_dump');
+
+public function getAndCacheFooFromDb()
+{
+    return $this->db
         ->get('foo')
-        ->then(null, array($this, 'getAndCacheFooFromDb'))
-        ->then('var_dump');
+        ->then(array($this, 'cacheFooFromDb'));
+}
 
-    public function getAndCacheFooFromDb()
-    {
-        return $this->db
-            ->get('foo')
-            ->then(array($this, 'cacheFooFromDb'));
-    }
+public function cacheFooFromDb($foo)
+{
+    $this->cache->set('foo', $foo);
 
-    public function cacheFooFromDb($foo)
-    {
-        $this->cache->set('foo', $foo);
-
-        return $foo;
-    }
+    return $foo;
+}
 ```
 By using chaining you can easily conditionally cache the value if it is
 fetched from the database.
