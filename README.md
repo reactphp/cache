@@ -1,6 +1,6 @@
 # Cache Component
 
-[![Build Status](https://secure.travis-ci.org/reactphp/cache.png?branch=master)](http://travis-ci.org/reactphp/cache)
+[![Build Status](https://secure.travis-ci.org/reactphp/cache.png?branch=master)](http://travis-ci.org/reactphp/cache) [![Code Climate](https://codeclimate.com/github/reactphp/cache/badges/gpa.svg)](https://codeclimate.com/github/reactphp/cache)
 
 Promised cache interface.
 
