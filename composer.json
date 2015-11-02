@@ -4,8 +4,8 @@
     "keywords": ["cache"],
     "license": "MIT",
     "require": {
-        "php": ">=5.4.0",
-        "react/promise": "~2.0"
+        "php": ">=5.3.0",
+        "react/promise": "~2.0|~1.1"
     },
     "autoload": {
         "psr-4": { "React\\Cache\\": "src\\" }
