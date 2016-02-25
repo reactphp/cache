@@ -8,6 +8,16 @@ The cache component provides a promise-based cache interface and an in-memory
 `ArrayCache` implementation of that. This allows consumers to type hint
 against the interface and third parties to provide alternate implementations.
 
+**Table of Contents**
+
+* [Basic usage](#basic-usage)
+  * [get](#get)
+  * [set](#set)
+  * [remove](#remove)
+* [Common usage](#common-usage)
+  * [Fallback get](#fallback-get)
+  * [Fallback-get-and-set](#fallback-get-and-set)
+
 ## Basic usage
 
 ### get
