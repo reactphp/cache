@@ -4,23 +4,32 @@
 
 Promised cache interface.
 
-The cache component provides a promise-based cache interface and an in-memory
-`ArrayCache` implementation of that. This allows consumers to type hint
-against the interface and third parties to provide alternate implementations.
+The cache component provides a promise-based [`CacheInterface`](#cacheinterface)
+and an in-memory [`ArrayCache`](#arraycache) implementation of that.
+This allows consumers to type hint against the interface and third parties to
+provide alternate implementations.
 
 **Table of Contents**
 
-* [Basic usage](#basic-usage)
-  * [get](#get)
-  * [set](#set)
-  * [remove](#remove)
+* [Usage](#usage)
+  * [CacheInterface](#cacheinterface)
+    * [get()](#get)
+    * [set()](#set)
+    * [remove()](#remove)
+  * [ArrayCache](#arraycache)
 * [Common usage](#common-usage)
   * [Fallback get](#fallback-get)
   * [Fallback-get-and-set](#fallback-get-and-set)
 
-## Basic usage
+## Usage
 
-### get
+### CacheInterface
+
+The `CacheInterface` describes the main interface of this component.
+This allows consumers to type hint against the interface and third parties to
+provide alternate implementations.
+
+#### get()
 
 ```php
 $cache
@@ -34,7 +43,7 @@ This example fetches the value of the key `foo` and passes it to the
 
 If the key `foo` does not exist, the promise will be rejected.
 
-### set
+#### set()
 
 ```php
 $cache->set('foo', 'bar');
@@ -45,7 +54,7 @@ already exists, it is overridden. No guarantees are made as to when the cache
 value is set. If the cache implementation has to go over the network to store
 it, it may take a while.
 
-### remove
+#### remove()
 
 ```php
 $cache->remove('foo');
@@ -53,6 +62,17 @@ $cache->remove('foo');
 
 This example eventually removes the key `foo` from the cache. As with `set`,
 this may not happen instantly.
+
+### ArrayCache
+
+The `ArrayCache` provides an in-memory implementation of the
+[`CacheInterface`](#cacheinterface).
+
+```php
+$cache = new ArrayCache();
+
+$cache->set('foo', 'bar');
+```
 
 ## Common usage
 
