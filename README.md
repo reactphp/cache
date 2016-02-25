@@ -2,10 +2,12 @@
 
 [![Build Status](https://secure.travis-ci.org/reactphp/cache.png?branch=master)](http://travis-ci.org/reactphp/cache) [![Code Climate](https://codeclimate.com/github/reactphp/cache/badges/gpa.svg)](https://codeclimate.com/github/reactphp/cache)
 
-Promised cache interface.
+Async, [Promise](https://github.com/reactphp/promise)-based cache interface.
 
-The cache component provides a promise-based [`CacheInterface`](#cacheinterface)
-and an in-memory [`ArrayCache`](#arraycache) implementation of that.
+The cache component provides a
+[Promise](https://github.com/reactphp/promise)-based
+[`CacheInterface`](#cacheinterface) and an in-memory [`ArrayCache`](#arraycache)
+implementation of that.
 This allows consumers to type hint against the interface and third parties to
 provide alternate implementations.
 
