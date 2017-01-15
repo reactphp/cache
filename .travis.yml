@@ -12,4 +12,4 @@ install:
   - composer install --prefer-source --no-interaction
   
 script:
-  - phpunit --coverage-text
+  - ./vendor/bin/phpunit --coverage-text
