@@ -20,7 +20,7 @@ interface CacheInterface
      *
      * @param string $key
      * @param mixed $value
-     * @return void
+     * @return PromiseInterface
      */
     public function set($key, $value);
 
@@ -29,6 +29,7 @@ interface CacheInterface
      *
      * @param string $key
      * @return void
+     * @return PromiseInterface
      */
     public function remove($key);
 }
