@@ -32,10 +32,14 @@ class ArrayCacheTest extends TestCase
     {
         $setPromise = $this->cache
             ->set('foo', 'bar');
-        $that = $this;
-        $setPromise->then(function ($true) use ($that) {
-            $that->assertTrue($true);
-        });
+
+        $mock = $this->createCallableMock();
+        $mock
+            ->expects($this->once())
+            ->method('__invoke')
+            ->with($this->identicalTo(true));
+
+        $setPromise->then($mock);
 
         $success = $this->createCallableMock();
         $success
@@ -56,10 +60,14 @@ class ArrayCacheTest extends TestCase
 
         $removePromise = $this->cache
             ->remove('foo');
-        $that = $this;
-        $removePromise->then(function ($true) use ($that) {
-            $that->assertTrue($true);
-        });
+
+        $mock = $this->createCallableMock();
+        $mock
+            ->expects($this->once())
+            ->method('__invoke')
+            ->with($this->identicalTo(true));
+
+        $removePromise->then($mock);
 
         $this->cache
             ->get('foo')
