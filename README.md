@@ -2,7 +2,8 @@
 
 [![Build Status](https://secure.travis-ci.org/reactphp/cache.png?branch=master)](http://travis-ci.org/reactphp/cache) [![Code Climate](https://codeclimate.com/github/reactphp/cache/badges/gpa.svg)](https://codeclimate.com/github/reactphp/cache)
 
-Async, [Promise](https://github.com/reactphp/promise)-based cache interface.
+Async, [Promise](https://github.com/reactphp/promise)-based cache interface
+for [ReactPHP](https://reactphp.org/).
 
 The cache component provides a
 [Promise](https://github.com/reactphp/promise)-based
@@ -134,22 +135,21 @@ fetched from the database.
 
 ## Install
 
-The recommended way to install this library is [through Composer](http://getcomposer.org).
-[New to Composer?](http://getcomposer.org/doc/00-intro.md)
+The recommended way to install this library is [through Composer](https://getcomposer.org).
+[New to Composer?](https://getcomposer.org/doc/00-intro.md)
 
 This will install the latest supported version:
 
 ```bash
-$ composer require react/cache:~0.4.0
+$ composer require react/cache:^0.4.2
 ```
 
-If you care a lot about BC, you may also want to look into supporting legacy versions:
+See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.
 
-```bash
-$ composer require "react/cache:~0.4.0|~0.3.0"
-```
-
-More details and upgrade guides can be found in the [CHANGELOG](CHANGELOG.md).
+This project aims to run on any platform and thus does not require any PHP
+extensions and supports running on legacy PHP 5.3 through current PHP 7+ and
+HHVM.
+It's *highly recommended to use PHP 7+* for this project.
 
 ## Tests
 

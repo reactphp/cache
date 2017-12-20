@@ -1,7 +1,7 @@
 {
     "name": "react/cache",
-    "description": "Async caching.",
-    "keywords": ["cache"],
+    "description": "Async, Promise-based cache interface for ReactPHP",
+    "keywords": ["cache", "caching", "promise", "ReactPHP"],
     "license": "MIT",
     "require": {
         "php": ">=5.3.0",
