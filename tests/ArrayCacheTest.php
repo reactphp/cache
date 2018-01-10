@@ -6,6 +6,9 @@ use React\Cache\ArrayCache;
 
 class ArrayCacheTest extends TestCase
 {
+    /**
+     * @var ArrayCache
+     */
     private $cache;
 
     public function setUp()
@@ -27,8 +30,16 @@ class ArrayCacheTest extends TestCase
     /** @test */
     public function setShouldSetKey()
     {
-        $this->cache
+        $setPromise = $this->cache
             ->set('foo', 'bar');
+
+        $mock = $this->createCallableMock();
+        $mock
+            ->expects($this->once())
+            ->method('__invoke')
+            ->with($this->identicalTo(true));
+
+        $setPromise->then($mock);
 
         $success = $this->createCallableMock();
         $success
@@ -47,8 +58,16 @@ class ArrayCacheTest extends TestCase
         $this->cache
             ->set('foo', 'bar');
 
-        $this->cache
+        $removePromise = $this->cache
             ->remove('foo');
+
+        $mock = $this->createCallableMock();
+        $mock
+            ->expects($this->once())
+            ->method('__invoke')
+            ->with($this->identicalTo(true));
+
+        $removePromise->then($mock);
 
         $this->cache
             ->get('foo')
