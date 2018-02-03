@@ -8,7 +8,7 @@ interface CacheInterface
 {
     /**
      * Retrieve an item from the cache, resolves with its value on
-     * success or null when no item can be found.
+     * success or null when no item can be found or when an error occurs.
      *
      * @param string $key
      * @return PromiseInterface
@@ -16,20 +16,22 @@ interface CacheInterface
     public function get($key);
 
     /**
-     * Store an item in the cache.
+     * Store an item in the cache, returns a promise which resolves to true on success or
+     * false on error.
      *
      * @param string $key
      * @param mixed $value
-     * @return PromiseInterface
+     * @return PromiseInterface Returns a promise which resolves to true on success of false on error
      */
     public function set($key, $value);
 
     /**
-     * Remove an item from the cache.
+     * Remove an item from the cache, returns a promise which resolves to true on success or
+     * false on error. When the $key isn't found in the cache it also
+     * resolves true.
      *
      * @param string $key
-     * @return void
-     * @return PromiseInterface
+     * @return PromiseInterface Returns a promise which resolves to true on success of false on error
      */
     public function remove($key);
 }
