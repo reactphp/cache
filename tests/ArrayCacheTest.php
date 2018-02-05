@@ -14,13 +14,19 @@ class ArrayCacheTest extends TestCase
     }
 
     /** @test */
-    public function getShouldRejectPromiseForNonExistentKey()
+    public function getShouldResolvePromiseWithNullForNonExistentKey()
     {
+        $success = $this->createCallableMock();
+        $success
+            ->expects($this->once())
+            ->method('__invoke')
+            ->with(null);
+
         $this->cache
             ->get('foo')
             ->then(
-                $this->expectCallableNever(),
-                $this->expectCallableOnce()
+                $success,
+                $this->expectCallableNever()
             );
     }
 
@@ -53,8 +59,8 @@ class ArrayCacheTest extends TestCase
         $this->cache
             ->get('foo')
             ->then(
-                $this->expectCallableNever(),
-                $this->expectCallableOnce()
+                $this->expectCallableOnce(),
+                $this->expectCallableNever()
             );
     }
 }

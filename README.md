@@ -47,7 +47,7 @@ This example fetches the value of the key `foo` and passes it to the
 `var_dump` function. You can use any of the composition provided by
 [promises](https://github.com/reactphp/promise).
 
-If the key `foo` does not exist, the promise will be rejected.
+If the key `foo` does not exist, the promise will be fulfilled with `null` as value.
 
 #### set()
 
@@ -91,14 +91,20 @@ example of that:
 ```php
 $cache
     ->get('foo')
-    ->then(null, 'getFooFromDb')
+    ->then(function ($result) {
+        if ($result === null) {
+            return getFooFromDb();
+        }
+        
+        return $result;
+    })
     ->then('var_dump');
 ```
 
-First an attempt is made to retrieve the value of `foo`. A promise rejection
-handler of the function `getFooFromDb` is registered. `getFooFromDb` is a
-function (can be any PHP callable) that will be called if the key does not
-exist in the cache.
+First an attempt is made to retrieve the value of `foo`. A callback function is 
+registered that will call `getFooFromDb` when the resulting value is null. 
+`getFooFromDb` is a function (can be any PHP callable) that will be called if the 
+key does not exist in the cache.
 
 `getFooFromDb` can handle the missing key by returning a promise for the
 actual value from the database (or any other data source). As a result, this
@@ -112,7 +118,13 @@ cache after fetching it from the data source.
 ```php
 $cache
     ->get('foo')
-    ->then(null, array($this, 'getAndCacheFooFromDb'))
+    ->then(function ($result) {
+        if ($result === null) {
+            return $this->getAndCacheFooFromDb();
+        }
+        
+        return $result;
+    })
     ->then('var_dump');
 
 public function getAndCacheFooFromDb()
