@@ -11,7 +11,7 @@ class ArrayCache implements CacheInterface
     public function get($key)
     {
         if (!isset($this->data[$key])) {
-            return Promise\reject();
+            return Promise\resolve(null);
         }
 
         return Promise\resolve($this->data[$key]);

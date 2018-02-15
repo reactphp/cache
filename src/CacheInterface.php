@@ -8,7 +8,7 @@ interface CacheInterface
 {
     /**
      * Retrieve an item from the cache, resolves with its value on
-     * success or rejects when no item can be found.
+     * success or null when no item can be found.
      *
      * @param string $key
      * @return PromiseInterface
