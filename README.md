@@ -74,13 +74,28 @@ or not the item has been removed from cache.
 
 ### ArrayCache
 
-The `ArrayCache` provides an in-memory implementation of the
-[`CacheInterface`](#cacheinterface).
+The `ArrayCache` provides an in-memory implementation of the [`CacheInterface`](#cacheinterface).
 
 ```php
 $cache = new ArrayCache();
 
 $cache->set('foo', 'bar');
+```
+
+Its constructor accepts an optional `?int $limit` parameter to limit the
+maximum number of entries to store in the LRU cache. If you add more
+entries to this instance, it will automatically take care of removing
+the one that was least recently used (LRU).
+
+For example, this snippet will overwrite the first value and only store
+the last two entries:
+
+```php
+$cache = new ArrayCache(2);
+
+$cache->set('foo', '1');
+$cache->set('bar', '2');
+$cache->set('baz', '3');
 ```
 
 ## Common usage
