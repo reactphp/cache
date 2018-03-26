@@ -47,7 +47,8 @@ This example fetches the value of the key `foo` and passes it to the
 `var_dump` function. You can use any of the composition provided by
 [promises](https://github.com/reactphp/promise).
 
-If the key `foo` does not exist, the promise will be fulfilled with `null` as value.
+If the key `foo` does not exist, the promise will be fulfilled with `null` as value. On 
+any error it will also resolve with `null`.
 
 #### set()
 
@@ -56,8 +57,9 @@ $cache->set('foo', 'bar');
 ```
 
 This example eventually sets the value of the key `foo` to `bar`. If it
-already exists, it is overridden. No guarantees are made as to when the cache
-value is set. If the cache implementation has to go over the network to store
+already exists, it is overridden. To provide guarantees as to when the cache
+value is set a promise is returned. The promise will fulfill with `true` on success 
+or `false` on error. If the cache implementation has to go over the network to store 
 it, it may take a while.
 
 #### remove()
@@ -67,7 +69,8 @@ $cache->remove('foo');
 ```
 
 This example eventually removes the key `foo` from the cache. As with `set`,
-this may not happen instantly.
+this may not happen instantly and a promise is returned to provide guarantees whether 
+or not the item has been removed from cache.
 
 ### ArrayCache
 
