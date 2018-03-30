@@ -26,6 +26,17 @@ class TestCase extends BaseTestCase
         return $mock;
     }
 
+    protected function expectCallableOnceWith($param)
+    {
+        $mock = $this->createCallableMock();
+        $mock
+            ->expects($this->once())
+            ->method('__invoke')
+            ->with($param);
+
+        return $mock;
+    }
+
     protected function expectCallableNever()
     {
         $mock = $this->createCallableMock();
