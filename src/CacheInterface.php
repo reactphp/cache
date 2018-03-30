@@ -34,9 +34,10 @@ interface CacheInterface
      *
      * @param string $key
      * @param mixed $value
+     * @param int|null $ttl
      * @return PromiseInterface Returns a promise which resolves to true on success of false on error
      */
-    public function set($key, $value);
+    public function set($key, $value, $ttl = null);
 
     /**
      * Remove an item from the cache, returns a promise which resolves to true on success or

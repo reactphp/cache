@@ -152,4 +152,47 @@ class ArrayCacheTest extends TestCase
         $this->cache->get('bar')->then($this->expectCallableOnceWith(null));
         $this->cache->get('baz')->then($this->expectCallableOnceWith('3'));
     }
+
+    /** @test */
+    public function getWithinTtl()
+    {
+        $this->cache
+            ->set('foo', 'bar', 100);
+
+
+        $success = $this->createCallableMock();
+        $success
+            ->expects($this->once())
+            ->method('__invoke')
+            ->with('bar');
+
+        $this->cache
+            ->get('foo')
+            ->then(
+                $success,
+                $this->expectCallableNever()
+            );
+    }
+
+    /** @test */
+    public function getAfterTtl()
+    {
+        $this->cache
+            ->set('foo', 'bar', 1);
+
+        sleep(2);
+
+        $success = $this->createCallableMock();
+        $success
+            ->expects($this->once())
+            ->method('__invoke')
+            ->with(null);
+
+        $this->cache
+            ->get('foo')
+            ->then(
+                $success,
+                $this->expectCallableNever()
+            );
+    }
 }

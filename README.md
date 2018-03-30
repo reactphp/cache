@@ -53,10 +53,13 @@ This example fetches the value of the key `foo` and passes it to the
 `var_dump` function. You can use any of the composition provided by
 [promises](https://github.com/reactphp/promise).
 
+If the key `foo` does not exist or when the TTL has passed, the promise will 
+be fulfilled with `null` as value. On any error it will also resolve with `null`.
+
 #### set()
 
 ```php
-$cache->set('foo', 'bar');
+$cache->set('foo', 'bar', 60);
 ```
 
 This example eventually sets the value of the key `foo` to `bar`. If it
