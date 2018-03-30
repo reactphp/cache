@@ -83,6 +83,28 @@ class ArrayCacheTest extends TestCase
             );
     }
 
+    public function testGetWillResolveWithNullForCacheMiss()
+    {
+        $this->cache = new ArrayCache();
+
+        $this->cache->get('foo')->then($this->expectCallableOnceWith(null));
+    }
+
+    public function testGetWillResolveWithDefaultValueForCacheMiss()
+    {
+        $this->cache = new ArrayCache();
+
+        $this->cache->get('foo', 'bar')->then($this->expectCallableOnceWith('bar'));
+    }
+
+    public function testGetWillResolveWithExplicitNullValueForCacheHit()
+    {
+        $this->cache = new ArrayCache();
+
+        $this->cache->set('foo', null);
+        $this->cache->get('foo', 'bar')->then($this->expectCallableOnceWith(null));
+    }
+
     public function testLimitSizeToZeroDoesNotStoreAnyData()
     {
         $this->cache = new ArrayCache(0);

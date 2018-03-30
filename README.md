@@ -37,6 +37,12 @@ provide alternate implementations.
 
 #### get()
 
+The `get(string $key, mixed $default = null): PromiseInterfae` method can be used to
+retrieve an item from the cache.
+
+This method will resolve with the cached value on success or with the
+given `$default` value when no item can be found or when an error occurs.
+
 ```php
 $cache
     ->get('foo')
@@ -46,9 +52,6 @@ $cache
 This example fetches the value of the key `foo` and passes it to the
 `var_dump` function. You can use any of the composition provided by
 [promises](https://github.com/reactphp/promise).
-
-If the key `foo` does not exist, the promise will be fulfilled with `null` as value. On 
-any error it will also resolve with `null`.
 
 #### set()
 

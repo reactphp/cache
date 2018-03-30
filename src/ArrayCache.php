@@ -41,10 +41,10 @@ class ArrayCache implements CacheInterface
         $this->limit = $limit;
     }
 
-    public function get($key)
+    public function get($key, $default = null)
     {
-        if (!isset($this->data[$key])) {
-            return Promise\resolve();
+        if (!array_key_exists($key, $this->data)) {
+            return Promise\resolve($default);
         }
 
         // remove and append to end of array to keep track of LRU info
