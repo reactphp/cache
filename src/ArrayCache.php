@@ -8,6 +8,7 @@ class ArrayCache implements CacheInterface
 {
     private $limit;
     private $data = array();
+    private $expires = array();
 
     /**
      * The `ArrayCache` provides an in-memory implementation of the [`CacheInterface`](#cacheinterface).
@@ -47,25 +48,16 @@ class ArrayCache implements CacheInterface
             return Promise\resolve($default);
         }
 
-        if ($this->data[$key]['expires'] === null) {
-            // remove and append to end of array to keep track of LRU info
-            $item = $this->data[$key];
-            unset($this->data[$key]);
-            $this->data[$key] = $item;
-            return Promise\resolve($this->data[$key]['value']);
-        }
-
-        if ($this->data[$key]['expires'] < time()) {
-            unset($this->data[$key]);
+        if (isset($this->expires[$key]) && $this->expires[$key] < time()) {
+            unset($this->data[$key], $this->expires[$key]);
             return Promise\resolve();
         }
-
 
         // remove and append to end of array to keep track of LRU info
         $value = $this->data[$key];
         unset($this->data[$key]);
         $this->data[$key] = $value;
-        return Promise\resolve($this->data[$key]['value']);
+        return Promise\resolve($this->data[$key]);
     }
 
     public function set($key, $value, $ttl = null)
@@ -73,21 +65,18 @@ class ArrayCache implements CacheInterface
         $expires = null;
 
         if (is_int($ttl)) {
-            $expires = time() + $ttl;
+            $this->expires[$key] = time() + $ttl;
         }
 
         // unset before setting to ensure this entry will be added to end of array
         unset($this->data[$key]);
-        $this->data[$key] = [
-            'value' => $value,
-            'expires' => $expires,
-        ];
-
+        $this->data[$key] = $value;
 
         // ensure size limit is not exceeded or remove first entry from array
         if ($this->limit !== null && count($this->data) > $this->limit) {
             reset($this->data);
-            unset($this->data[key($this->data)]);
+            $key = key($this->data);
+            unset($this->data[$key], $this->expires[$key]);
         }
 
         return Promise\resolve(true);
@@ -95,7 +84,7 @@ class ArrayCache implements CacheInterface
 
     public function remove($key)
     {
-        unset($this->data[$key]);
+        unset($this->data[$key], $this->expires[$key]);
         return Promise\resolve(true);
     }
 }
