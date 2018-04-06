@@ -50,7 +50,7 @@ class ArrayCache implements CacheInterface
 
         if (isset($this->expires[$key]) && $this->expires[$key] < time()) {
             unset($this->data[$key], $this->expires[$key]);
-            return Promise\resolve();
+            return Promise\resolve($default);
         }
 
         // remove and append to end of array to keep track of LRU info
