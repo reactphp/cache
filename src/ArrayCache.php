@@ -72,7 +72,7 @@ class ArrayCache implements CacheInterface
         $expires = null;
 
         if (is_int($ttl)) {
-            $this->expires[$key] = time() + $ttl;
+            $this->expires[$key] = microtime(true) + $ttl;
             $this->expiresQueue->insert($key, 0 - $this->expires[$key]);
         }
 
@@ -108,7 +108,7 @@ class ArrayCache implements CacheInterface
         do {
             $run = false;
             $item = $this->expiresQueue->current();
-            if ((int)substr((string)$item['priority'], 1) <= time()) {
+            if ((int)substr((string)$item['priority'], 1) <= microtime(true)) {
                 $this->expiresQueue->extract();
                 $run = true;
                 unset($this->data[$item['data']], $this->expires[$item['data']]);

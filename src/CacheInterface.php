@@ -34,7 +34,7 @@ interface CacheInterface
      *
      * @param string $key
      * @param mixed $value
-     * @param int|null $ttl
+     * @param float|null $ttl
      * @return PromiseInterface Returns a promise which resolves to true on success of false on error
      */
     public function set($key, $value, $ttl = null);
