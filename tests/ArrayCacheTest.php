@@ -153,46 +153,44 @@ class ArrayCacheTest extends TestCase
         $this->cache->get('baz')->then($this->expectCallableOnceWith('3'));
     }
 
-    /** @test */
-    public function getWithinTtl()
+    public function testGetWillResolveWithValueIfItemIsNotExpired()
     {
-        $this->cache
-            ->set('foo', 'bar', 100);
+        $this->cache = new ArrayCache();
 
+        $this->cache->set('foo', '1', 10);
 
-        $success = $this->createCallableMock();
-        $success
-            ->expects($this->once())
-            ->method('__invoke')
-            ->with('bar');
-
-        $this->cache
-            ->get('foo')
-            ->then(
-                $success,
-                $this->expectCallableNever()
-            );
+        $this->cache->get('foo')->then($this->expectCallableOnceWith('1'));
     }
 
-    /** @test */
-    public function getAfterTtl()
+    public function testGetWillResolveWithDefaultIfItemIsExpired()
     {
-        $this->cache
-            ->set('foo', 'bar', 1);
+        $this->cache = new ArrayCache();
 
-        sleep(2);
+        $this->cache->set('foo', '1', 0);
 
-        $success = $this->createCallableMock();
-        $success
-            ->expects($this->once())
-            ->method('__invoke')
-            ->with(null);
+        $this->cache->get('foo')->then($this->expectCallableOnceWith(null));
+    }
 
-        $this->cache
-            ->get('foo')
-            ->then(
-                $success,
-                $this->expectCallableNever()
-            );
+    public function testSetWillOverwritOldestItemIfNoEntryIsExpired()
+    {
+        $this->cache = new ArrayCache(2);
+
+        $this->cache->set('foo', '1', 10);
+        $this->cache->set('bar', '2', 20);
+        $this->cache->set('baz', '3', 30);
+
+        $this->cache->get('foo')->then($this->expectCallableOnceWith(null));
+    }
+
+    public function testSetWillOverwriteExpiredItemIfAnyEntryIsExpired()
+    {
+        $this->cache = new ArrayCache(2);
+
+        $this->cache->set('foo', '1', 10);
+        $this->cache->set('bar', '2', 0);
+        $this->cache->set('baz', '3', 30);
+
+        $this->cache->get('foo')->then($this->expectCallableOnceWith('1'));
+        $this->cache->get('bar')->then($this->expectCallableOnceWith(null));
     }
 }
