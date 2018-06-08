@@ -152,4 +152,45 @@ class ArrayCacheTest extends TestCase
         $this->cache->get('bar')->then($this->expectCallableOnceWith(null));
         $this->cache->get('baz')->then($this->expectCallableOnceWith('3'));
     }
+
+    public function testGetWillResolveWithValueIfItemIsNotExpired()
+    {
+        $this->cache = new ArrayCache();
+
+        $this->cache->set('foo', '1', 10);
+
+        $this->cache->get('foo')->then($this->expectCallableOnceWith('1'));
+    }
+
+    public function testGetWillResolveWithDefaultIfItemIsExpired()
+    {
+        $this->cache = new ArrayCache();
+
+        $this->cache->set('foo', '1', 0);
+
+        $this->cache->get('foo')->then($this->expectCallableOnceWith(null));
+    }
+
+    public function testSetWillOverwritOldestItemIfNoEntryIsExpired()
+    {
+        $this->cache = new ArrayCache(2);
+
+        $this->cache->set('foo', '1', 10);
+        $this->cache->set('bar', '2', 20);
+        $this->cache->set('baz', '3', 30);
+
+        $this->cache->get('foo')->then($this->expectCallableOnceWith(null));
+    }
+
+    public function testSetWillOverwriteExpiredItemIfAnyEntryIsExpired()
+    {
+        $this->cache = new ArrayCache(2);
+
+        $this->cache->set('foo', '1', 10);
+        $this->cache->set('bar', '2', 0);
+        $this->cache->set('baz', '3', 30);
+
+        $this->cache->get('foo')->then($this->expectCallableOnceWith('1'));
+        $this->cache->get('bar')->then($this->expectCallableOnceWith(null));
+    }
 }

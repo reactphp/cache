@@ -37,11 +37,13 @@ provide alternate implementations.
 
 #### get()
 
-The `get(string $key, mixed $default = null): PromiseInterfae` method can be used to
+The `get(string $key, mixed $default = null): PromiseInterface` method can be used to
 retrieve an item from the cache.
 
 This method will resolve with the cached value on success or with the
 given `$default` value when no item can be found or when an error occurs.
+Similarly, an expired cache item (once the time-to-live is expired) is
+considered a cache miss.
 
 ```php
 $cache
@@ -55,15 +57,25 @@ This example fetches the value of the key `foo` and passes it to the
 
 #### set()
 
+The `set(string $key, mixed $value, ?float $ttl = null): PromiseInterface` method can be used to
+store an item in the cache.
+
+This method will resolve with `true` on success or `false` when an error
+occurs. If the cache implementation has to go over the network to store
+it, it may take a while.
+
+The optional `$ttl` parameter sets the maximum time-to-live in seconds
+for this cache item. If this parameter is omitted (or `null`), the item
+will stay in the cache for as long as the underlying implementation
+supports. Trying to access an expired cache item results in a cache miss,
+see also [`get()`](#get).
+
 ```php
-$cache->set('foo', 'bar');
+$cache->set('foo', 'bar', 60);
 ```
 
 This example eventually sets the value of the key `foo` to `bar`. If it
-already exists, it is overridden. To provide guarantees as to when the cache
-value is set a promise is returned. The promise will fulfill with `true` on success 
-or `false` on error. If the cache implementation has to go over the network to store 
-it, it may take a while.
+already exists, it is overridden.
 
 #### remove()
 
