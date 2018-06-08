@@ -18,7 +18,7 @@ provide alternate implementations.
   * [CacheInterface](#cacheinterface)
     * [get()](#get)
     * [set()](#set)
-    * [remove()](#remove)
+    * [delete()](#delete)
   * [ArrayCache](#arraycache)
 * [Common usage](#common-usage)
   * [Fallback get](#fallback-get)
@@ -77,15 +77,22 @@ $cache->set('foo', 'bar', 60);
 This example eventually sets the value of the key `foo` to `bar`. If it
 already exists, it is overridden.
 
-#### remove()
+#### delete()
+
+Deletes an item from the cache.
+
+This method will resolve with `true` on success or `false` when an error
+occurs. When no item for `$key` is found in the cache, it also resolves
+to `true`. If the cache implementation has to go over the network to
+delete it, it may take a while.
 
 ```php
-$cache->remove('foo');
+$cache->delete('foo');
 ```
 
-This example eventually removes the key `foo` from the cache. As with `set`,
-this may not happen instantly and a promise is returned to provide guarantees whether 
-or not the item has been removed from cache.
+This example eventually deletes the key `foo` from the cache. As with
+`set()`, this may not happen instantly and a promise is returned to
+provide guarantees whether or not the item has been removed from cache.
 
 ### ArrayCache
 

@@ -93,7 +93,7 @@ class ArrayCache implements CacheInterface
         return Promise\resolve(true);
     }
 
-    public function remove($key)
+    public function delete($key)
     {
         unset($this->data[$key], $this->expires[$key]);
 

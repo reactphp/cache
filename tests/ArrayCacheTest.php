@@ -59,13 +59,13 @@ class ArrayCacheTest extends TestCase
     }
 
     /** @test */
-    public function removeShouldRemoveKey()
+    public function deleteShouldDeleteKey()
     {
         $this->cache
             ->set('foo', 'bar');
 
-        $removePromise = $this->cache
-            ->remove('foo');
+        $deletePromise = $this->cache
+            ->delete('foo');
 
         $mock = $this->createCallableMock();
         $mock
@@ -73,7 +73,7 @@ class ArrayCacheTest extends TestCase
             ->method('__invoke')
             ->with($this->identicalTo(true));
 
-        $removePromise->then($mock);
+        $deletePromise->then($mock);
 
         $this->cache
             ->get('foo')
