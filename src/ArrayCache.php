@@ -45,11 +45,11 @@ class ArrayCache implements CacheInterface
     public function get($key, $default = null)
     {
         // delete key if it is already expired => below will detect this as a cache miss
-        if (isset($this->expires[$key]) && $this->expires[$key] < microtime(true)) {
+        if (isset($this->expires[$key]) && $this->expires[$key] < \microtime(true)) {
             unset($this->data[$key], $this->expires[$key]);
         }
 
-        if (!array_key_exists($key, $this->data)) {
+        if (!\array_key_exists($key, $this->data)) {
             return Promise\resolve($default);
         }
 
@@ -70,22 +70,22 @@ class ArrayCache implements CacheInterface
         // sort expiration times if TTL is given (first will expire first)
         unset($this->expires[$key]);
         if ($ttl !== null) {
-            $this->expires[$key] = microtime(true) + $ttl;
-            asort($this->expires);
+            $this->expires[$key] = \microtime(true) + $ttl;
+            \asort($this->expires);
         }
 
         // ensure size limit is not exceeded or remove first entry from array
-        if ($this->limit !== null && count($this->data) > $this->limit) {
+        if ($this->limit !== null && \count($this->data) > $this->limit) {
             // first try to check if there's any expired entry
             // expiration times are sorted, so we can simply look at the first one
-            reset($this->expires);
-            $key = key($this->expires);
+            \reset($this->expires);
+            $key = \key($this->expires);
 
             // check to see if the first in the list of expiring keys is already expired
             // if the first key is not expired, we have to overwrite by using LRU info
-            if ($key === null || $this->expires[$key] > microtime(true)) {
-                reset($this->data);
-                $key = key($this->data);
+            if ($key === null || $this->expires[$key] > \microtime(true)) {
+                \reset($this->data);
+                $key = \key($this->data);
             }
             unset($this->data[$key], $this->expires[$key]);
         }
