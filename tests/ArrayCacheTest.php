@@ -193,4 +193,24 @@ class ArrayCacheTest extends TestCase
         $this->cache->get('foo')->then($this->expectCallableOnceWith('1'));
         $this->cache->get('bar')->then($this->expectCallableOnceWith(null));
     }
+
+    public function testGetMultiple()
+    {
+        $this->cache = new ArrayCache();
+        $this->cache->set('foo', '1');
+
+        $this->cache
+            ->getMultiple(array('foo', 'bar'), 'baz')
+            ->then($this->expectCallableOnceWith(array('foo' => '1', 'bar' => 'baz')));
+    }
+
+    public function testSetMultiple()
+    {
+        $this->cache = new ArrayCache();
+        $this->cache->setMultiple(array('foo' => '1', 'bar' => '2'), 10);
+
+        $this->cache
+            ->getMultiple(array('foo', 'bar'))
+            ->then($this->expectCallableOnceWith(array('foo' => '1', 'bar' => '2')));
+    }
 }

@@ -3,6 +3,7 @@
 namespace React\Cache;
 
 use React\Promise;
+use React\Promise\PromiseInterface;
 
 class ArrayCache implements CacheInterface
 {
@@ -96,6 +97,26 @@ class ArrayCache implements CacheInterface
     public function delete($key)
     {
         unset($this->data[$key], $this->expires[$key]);
+
+        return Promise\resolve(true);
+    }
+
+    public function getMultiple($keys, $default = null)
+    {
+        $values = array();
+
+        foreach ($keys as $key) {
+            $values[$key] = $this->get($key, $default);
+        }
+
+        return Promise\all($values);
+    }
+
+    public function setMultiple($values, $ttl = null)
+    {
+        foreach ($values as $key => $value) {
+            $this->set($key, $value, $ttl);
+        }
 
         return Promise\resolve(true);
     }
