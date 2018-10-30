@@ -19,8 +19,11 @@ provide alternate implementations.
     * [get()](#get)
     * [set()](#set)
     * [delete()](#delete)
-    * [getMultiple](#getmultiple)
-    * [setMultiple](#setmultiple)
+    * [getMultiple()](#getmultiple)
+    * [setMultiple()](#setmultiple)
+    * [deleteMultiple()](#deletemultiple)
+    * [clear()](#clear)
+    * [has()](#has)
   * [ArrayCache](#arraycache)
 * [Common usage](#common-usage)
   * [Fallback get](#fallback-get)
@@ -136,6 +139,64 @@ $cache->setMultiple(array('foo' => 1, 'bar' => 2), 60);
 
 This example eventually sets the list of values - the key `foo` to `1` value 
 and the key `bar` to `2`. If some of the keys already exist, they are overridden.
+
+#### deleteMultiple()
+
+Deletes multiple cache items in a single operation.
+
+This method will resolve with `true` on success or `false` when an error
+occurs. When no items for `$keys` are found in the cache, it also resolves
+to `true`. If the cache implementation has to go over the network to
+delete it, it may take a while.
+
+```php
+$cache->deleteMultiple(array('foo', 'bar, 'baz'));
+```
+
+This example eventually deletes keys `foo`, `bar` and `baz` from the cache. 
+As with `setMultiple()`, this may not happen instantly and a promise is returned to
+provide guarantees whether or not the item has been removed from cache.
+
+#### clear()
+
+Wipes clean the entire cache.
+
+This method will resolve with `true` on success or `false` when an error
+occurs. If the cache implementation has to go over the network to
+delete it, it may take a while.
+
+```php
+$cache->clear();
+```
+
+This example eventually deletes all keys from the cache. As with `deleteMultiple()`, 
+this may not happen instantly and a promise is returned to provide guarantees 
+whether or not all the items have been removed from cache.
+
+#### has()
+
+Determines whether an item is present in the cache.
+
+This method will resolve with `true` on success or reject with `false` 
+when no item can be found or when an error occurs. Similarly, an expired cache item 
+(once the time-to-live is expired) is considered a cache miss.
+
+```php
+$cache
+    ->has('foo')
+    ->then('var_dump')
+    ->otherwise('error_log');
+```
+
+This example checks if the value of the key `foo` is set in the cache. If it is set,
+`true` will be passed to the `var_dump` function; otherwise, `false` will be passed 
+to the `error_log` function. You can use any of the composition provided by
+[promises](https://github.com/reactphp/promise).
+
+NOTE: It is recommended that has() is only to be used for cache warming type purposes
+and not to be used within your live applications operations for get/set, as this method
+is subject to a race condition where your has() will return true and immediately after,
+another script can remove it making the state of your app out of date.
 
 ### ArrayCache
 

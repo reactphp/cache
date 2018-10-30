@@ -120,4 +120,40 @@ class ArrayCache implements CacheInterface
 
         return Promise\resolve(true);
     }
+
+    public function deleteMultiple($keys)
+    {
+        foreach ($keys as $key) {
+            unset($this->data[$key], $this->expires[$key]);
+        }
+
+        return Promise\resolve(true);
+    }
+
+    public function clear()
+    {
+        $this->data = array();
+        $this->expires = array();
+
+        return Promise\resolve(true);
+    }
+
+    public function has($key)
+    {
+        // delete key if it is already expired
+        if (isset($this->expires[$key]) && $this->expires[$key] < \microtime(true)) {
+            unset($this->data[$key], $this->expires[$key]);
+        }
+
+        if (!\array_key_exists($key, $this->data)) {
+            return Promise\reject(false);
+        }
+
+        // remove and append to end of array to keep track of LRU info
+        $value = $this->data[$key];
+        unset($this->data[$key]);
+        $this->data[$key] = $value;
+
+        return Promise\resolve(true);
+    }
 }
