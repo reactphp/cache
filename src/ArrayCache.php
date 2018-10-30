@@ -146,7 +146,7 @@ class ArrayCache implements CacheInterface
         }
 
         if (!\array_key_exists($key, $this->data)) {
-            return Promise\reject(false);
+            return Promise\resolve(false);
         }
 
         // remove and append to end of array to keep track of LRU info

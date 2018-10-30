@@ -225,7 +225,7 @@ class ArrayCacheTest extends TestCase
 
         $this->cache
             ->has('foo')
-            ->otherwise($this->expectCallableOnceWith(false));
+            ->then($this->expectCallableOnceWith(false));
 
         $this->cache
             ->has('bar')
@@ -233,7 +233,7 @@ class ArrayCacheTest extends TestCase
 
         $this->cache
             ->has('baz')
-            ->otherwise($this->expectCallableOnceWith(false));
+            ->then($this->expectCallableOnceWith(false));
     }
 
     public function testClearShouldClearCache()
@@ -245,15 +245,15 @@ class ArrayCacheTest extends TestCase
 
         $this->cache
             ->has('foo')
-            ->otherwise($this->expectCallableOnceWith(false));
+            ->then($this->expectCallableOnceWith(false));
 
         $this->cache
             ->has('bar')
-            ->otherwise($this->expectCallableOnceWith(false));
+            ->then($this->expectCallableOnceWith(false));
 
         $this->cache
             ->has('baz')
-            ->otherwise($this->expectCallableOnceWith(false));
+            ->then($this->expectCallableOnceWith(false));
     }
 
     public function hasShouldResolvePromiseForExistingKey()
@@ -266,14 +266,14 @@ class ArrayCacheTest extends TestCase
             ->then($this->expectCallableOnceWith(true));
     }
 
-    public function hasShouldRejectPromiseForNonExistentKey()
+    public function hasShouldResolvePromiseForNonExistentKey()
     {
         $this->cache = new ArrayCache();
         $this->cache->set('foo', 'bar');
 
         $this->cache
             ->has('foo')
-            ->otherwise($this->expectCallableOnceWith(false));
+            ->then($this->expectCallableOnceWith(false));
     }
 
     public function testHasWillResolveIfItemIsNotExpired()
@@ -286,14 +286,14 @@ class ArrayCacheTest extends TestCase
             ->then($this->expectCallableOnceWith(true));
     }
 
-    public function testHasWillRejectIfItemIsExpired()
+    public function testHasWillResolveIfItemIsExpired()
     {
         $this->cache = new ArrayCache();
         $this->cache->set('foo', '1', 0);
 
         $this->cache
             ->has('foo')
-            ->otherwise($this->expectCallableOnceWith(false));
+            ->then($this->expectCallableOnceWith(false));
     }
 
     public function testHasWillResolveForExplicitNullValue()
@@ -316,7 +316,7 @@ class ArrayCacheTest extends TestCase
         $this->cache->set('baz', 3);
 
         $this->cache->has('foo')->then($this->expectCallableOnceWith(1));
-        $this->cache->has('bar')->otherwise($this->expectCallableOnceWith(false));
+        $this->cache->has('bar')->then($this->expectCallableOnceWith(false));
         $this->cache->has('baz')->then($this->expectCallableOnceWith(3));
     }
 }

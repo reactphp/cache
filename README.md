@@ -177,20 +177,18 @@ whether or not all the items have been removed from cache.
 
 Determines whether an item is present in the cache.
 
-This method will resolve with `true` on success or reject with `false` 
-when no item can be found or when an error occurs. Similarly, an expired cache item 
-(once the time-to-live is expired) is considered a cache miss.
+This method will resolve with `true` on success or `false` when no item can be found 
+or when an error occurs. Similarly, an expired cache item (once the time-to-live 
+is expired) is considered a cache miss.
 
 ```php
 $cache
     ->has('foo')
-    ->then('var_dump')
-    ->otherwise('error_log');
+    ->then('var_dump');
 ```
 
-This example checks if the value of the key `foo` is set in the cache. If it is set,
-`true` will be passed to the `var_dump` function; otherwise, `false` will be passed 
-to the `error_log` function. You can use any of the composition provided by
+This example checks if the value of the key `foo` is set in the cache and passes 
+the result to the `var_dump` function. You can use any of the composition provided by
 [promises](https://github.com/reactphp/promise).
 
 NOTE: It is recommended that has() is only to be used for cache warming type purposes

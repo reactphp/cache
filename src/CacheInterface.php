@@ -146,13 +146,27 @@ interface CacheInterface
     /**
      * Determines whether an item is present in the cache.
      *
+     * This method will resolve with `true` on success or `false` when no item can be found
+     * or when an error occurs. Similarly, an expired cache item (once the time-to-live
+     * is expired) is considered a cache miss.
+     *
+     * ```php
+     * $cache
+     *     ->has('foo')
+     *     ->then('var_dump');
+     * ```
+     *
+     * This example checks if the value of the key `foo` is set in the cache and passes
+     * the result to the `var_dump` function. You can use any of the composition provided by
+     * [promises](https://github.com/reactphp/promise).
+     *
      * NOTE: It is recommended that has() is only to be used for cache warming type purposes
      * and not to be used within your live applications operations for get/set, as this method
      * is subject to a race condition where your has() will return true and immediately after,
      * another script can remove it making the state of your app out of date.
      *
      * @param string $key The cache item key.
-     * @return PromiseInterface Returns a promise which resolves to `true` on success or rejects `` on error
+     * @return PromiseInterface Returns a promise which resolves to `true` on success or `false` on error
      */
     public function has($key);
 }
