@@ -1,6 +1,6 @@
-# Cache Component
+# Cache
 
-[![Build Status](https://secure.travis-ci.org/reactphp/cache.png?branch=master)](http://travis-ci.org/reactphp/cache) [![Code Climate](https://codeclimate.com/github/reactphp/cache/badges/gpa.svg)](https://codeclimate.com/github/reactphp/cache)
+[![Build Status](https://secure.travis-ci.org/reactphp/cache.png?branch=master)](http://travis-ci.org/reactphp/cache)
 
 Async, [Promise](https://github.com/reactphp/promise)-based cache interface
 for [ReactPHP](https://reactphp.org/).
@@ -11,6 +11,9 @@ The cache component provides a
 implementation of that.
 This allows consumers to type hint against the interface and third parties to
 provide alternate implementations.
+This project is heavily inspired by
+[PSR-16: Common Interface for Caching Libraries](https://www.php-fig.org/psr/psr-16/),
+but uses an interface more suited for async, non-blocking applications.
 
 **Table of Contents**
 
@@ -42,7 +45,7 @@ provide alternate implementations.
 
 #### get()
 
-The `get(string $key, mixed $default = null): PromiseInterface` method can be used to
+The `get(string $key, mixed $default = null): PromiseInterface<mixed>` method can be used to
 retrieve an item from the cache.
 
 This method will resolve with the cached value on success or with the
@@ -62,7 +65,7 @@ This example fetches the value of the key `foo` and passes it to the
 
 #### set()
 
-The `set(string $key, mixed $value, ?float $ttl = null): PromiseInterface` method can be used to
+The `set(string $key, mixed $value, ?float $ttl = null): PromiseInterface<bool>` method can be used to
 store an item in the cache.
 
 This method will resolve with `true` on success or `false` when an error
@@ -84,7 +87,8 @@ already exists, it is overridden.
 
 #### delete()
 
-Deletes an item from the cache.
+The `delete(string $key): PromiseInterface<bool>` method can be used to
+delete an item from the cache.
 
 This method will resolve with `true` on success or `false` when an error
 occurs. When no item for `$key` is found in the cache, it also resolves
@@ -101,8 +105,8 @@ provide guarantees whether or not the item has been removed from cache.
 
 #### getMultiple()
 
-The `getMultiple(iterable $keys, mixed $default = null): PromiseInterface` method can be used to
-retrieves multiple cache items by their unique keys.
+The `getMultiple(iterable $keys, mixed $default = null): PromiseInterface<iterable>` method can be used to
+retrieve multiple cache items by their unique keys.
 
 This method will resolve with the list of cached value on success or with the
 given `$default` value when no item can be found or when an error occurs.
@@ -121,7 +125,8 @@ This example fetches the list of value for `foo` and `bar` keys and passes it to
 
 #### setMultiple()
 
-Persists a set of key => value pairs in the cache, with an optional TTL.
+The `setMultiple(iterable $values, ?float $ttl = null): PromiseInterface<bool>` method can be used to
+persist a set of key => value pairs in the cache, with an optional TTL.
 
 This method will resolve with `true` on success or `false` when an error
 occurs. If the cache implementation has to go over the network to store
@@ -142,7 +147,8 @@ and the key `bar` to `2`. If some of the keys already exist, they are overridden
 
 #### deleteMultiple()
 
-Deletes multiple cache items in a single operation.
+The `setMultiple(iterable $keys): PromiseInterface<bool>` method can be used to
+delete multiple cache items in a single operation.
 
 This method will resolve with `true` on success or `false` when an error
 occurs. When no items for `$keys` are found in the cache, it also resolves
@@ -159,7 +165,8 @@ provide guarantees whether or not the item has been removed from cache.
 
 #### clear()
 
-Wipes clean the entire cache.
+The `clear(): PromiseInterface<bool>` method can be used to
+wipe clean the entire cache.
 
 This method will resolve with `true` on success or `false` when an error
 occurs. If the cache implementation has to go over the network to
@@ -175,7 +182,8 @@ whether or not all the items have been removed from cache.
 
 #### has()
 
-Determines whether an item is present in the cache.
+The `has(string $key): PromiseInterface<bool>` method can be used to
+determine whether an item is present in the cache.
 
 This method will resolve with `true` on success or `false` when no item can be found 
 or when an error occurs. Similarly, an expired cache item (once the time-to-live 
