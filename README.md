@@ -19,6 +19,11 @@ provide alternate implementations.
     * [get()](#get)
     * [set()](#set)
     * [delete()](#delete)
+    * [getMultiple()](#getmultiple)
+    * [setMultiple()](#setmultiple)
+    * [deleteMultiple()](#deletemultiple)
+    * [clear()](#clear)
+    * [has()](#has)
   * [ArrayCache](#arraycache)
 * [Common usage](#common-usage)
   * [Fallback get](#fallback-get)
@@ -93,6 +98,103 @@ $cache->delete('foo');
 This example eventually deletes the key `foo` from the cache. As with
 `set()`, this may not happen instantly and a promise is returned to
 provide guarantees whether or not the item has been removed from cache.
+
+#### getMultiple()
+
+The `getMultiple(iterable $keys, mixed $default = null): PromiseInterface` method can be used to
+retrieves multiple cache items by their unique keys.
+
+This method will resolve with the list of cached value on success or with the
+given `$default` value when no item can be found or when an error occurs.
+Similarly, an expired cache item (once the time-to-live is expired) is
+considered a cache miss.
+
+```php
+$cache
+    ->getMultiple(array('foo', 'bar'))
+    ->then('var_dump');
+```
+
+This example fetches the list of value for `foo` and `bar` keys and passes it to the
+`var_dump` function. You can use any of the composition provided by
+[promises](https://github.com/reactphp/promise).
+
+#### setMultiple()
+
+Persists a set of key => value pairs in the cache, with an optional TTL.
+
+This method will resolve with `true` on success or `false` when an error
+occurs. If the cache implementation has to go over the network to store
+it, it may take a while.
+
+The optional `$ttl` parameter sets the maximum time-to-live in seconds
+for these cache items. If this parameter is omitted (or `null`), these items
+will stay in the cache for as long as the underlying implementation
+supports. Trying to access an expired cache items results in a cache miss,
+see also [`getMultiple()`](#getmultiple).
+
+```php
+$cache->setMultiple(array('foo' => 1, 'bar' => 2), 60);
+```
+
+This example eventually sets the list of values - the key `foo` to `1` value 
+and the key `bar` to `2`. If some of the keys already exist, they are overridden.
+
+#### deleteMultiple()
+
+Deletes multiple cache items in a single operation.
+
+This method will resolve with `true` on success or `false` when an error
+occurs. When no items for `$keys` are found in the cache, it also resolves
+to `true`. If the cache implementation has to go over the network to
+delete it, it may take a while.
+
+```php
+$cache->deleteMultiple(array('foo', 'bar, 'baz'));
+```
+
+This example eventually deletes keys `foo`, `bar` and `baz` from the cache. 
+As with `setMultiple()`, this may not happen instantly and a promise is returned to
+provide guarantees whether or not the item has been removed from cache.
+
+#### clear()
+
+Wipes clean the entire cache.
+
+This method will resolve with `true` on success or `false` when an error
+occurs. If the cache implementation has to go over the network to
+delete it, it may take a while.
+
+```php
+$cache->clear();
+```
+
+This example eventually deletes all keys from the cache. As with `deleteMultiple()`, 
+this may not happen instantly and a promise is returned to provide guarantees 
+whether or not all the items have been removed from cache.
+
+#### has()
+
+Determines whether an item is present in the cache.
+
+This method will resolve with `true` on success or `false` when no item can be found 
+or when an error occurs. Similarly, an expired cache item (once the time-to-live 
+is expired) is considered a cache miss.
+
+```php
+$cache
+    ->has('foo')
+    ->then('var_dump');
+```
+
+This example checks if the value of the key `foo` is set in the cache and passes 
+the result to the `var_dump` function. You can use any of the composition provided by
+[promises](https://github.com/reactphp/promise).
+
+NOTE: It is recommended that has() is only to be used for cache warming type purposes
+and not to be used within your live applications operations for get/set, as this method
+is subject to a race condition where your has() will return true and immediately after,
+another script can remove it making the state of your app out of date.
 
 ### ArrayCache
 

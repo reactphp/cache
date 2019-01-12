@@ -193,4 +193,130 @@ class ArrayCacheTest extends TestCase
         $this->cache->get('foo')->then($this->expectCallableOnceWith('1'));
         $this->cache->get('bar')->then($this->expectCallableOnceWith(null));
     }
+
+    public function testGetMultiple()
+    {
+        $this->cache = new ArrayCache();
+        $this->cache->set('foo', '1');
+
+        $this->cache
+            ->getMultiple(array('foo', 'bar'), 'baz')
+            ->then($this->expectCallableOnceWith(array('foo' => '1', 'bar' => 'baz')));
+    }
+
+    public function testSetMultiple()
+    {
+        $this->cache = new ArrayCache();
+        $this->cache->setMultiple(array('foo' => '1', 'bar' => '2'), 10);
+
+        $this->cache
+            ->getMultiple(array('foo', 'bar'))
+            ->then($this->expectCallableOnceWith(array('foo' => '1', 'bar' => '2')));
+    }
+
+    public function testDeleteMultiple()
+    {
+        $this->cache = new ArrayCache();
+        $this->cache->setMultiple(array('foo' => 1, 'bar' => 2, 'baz' => 3));
+
+        $this->cache
+            ->deleteMultiple(array('foo', 'baz'))
+            ->then($this->expectCallableOnceWith(true));
+
+        $this->cache
+            ->has('foo')
+            ->then($this->expectCallableOnceWith(false));
+
+        $this->cache
+            ->has('bar')
+            ->then($this->expectCallableOnceWith(true));
+
+        $this->cache
+            ->has('baz')
+            ->then($this->expectCallableOnceWith(false));
+    }
+
+    public function testClearShouldClearCache()
+    {
+        $this->cache = new ArrayCache();
+        $this->cache->setMultiple(array('foo' => 1, 'bar' => 2, 'baz' => 3));
+
+        $this->cache->clear();
+
+        $this->cache
+            ->has('foo')
+            ->then($this->expectCallableOnceWith(false));
+
+        $this->cache
+            ->has('bar')
+            ->then($this->expectCallableOnceWith(false));
+
+        $this->cache
+            ->has('baz')
+            ->then($this->expectCallableOnceWith(false));
+    }
+
+    public function hasShouldResolvePromiseForExistingKey()
+    {
+        $this->cache = new ArrayCache();
+        $this->cache->set('foo', 'bar');
+
+        $this->cache
+            ->has('foo')
+            ->then($this->expectCallableOnceWith(true));
+    }
+
+    public function hasShouldResolvePromiseForNonExistentKey()
+    {
+        $this->cache = new ArrayCache();
+        $this->cache->set('foo', 'bar');
+
+        $this->cache
+            ->has('foo')
+            ->then($this->expectCallableOnceWith(false));
+    }
+
+    public function testHasWillResolveIfItemIsNotExpired()
+    {
+        $this->cache = new ArrayCache();
+        $this->cache->set('foo', '1', 10);
+
+        $this->cache
+            ->has('foo')
+            ->then($this->expectCallableOnceWith(true));
+    }
+
+    public function testHasWillResolveIfItemIsExpired()
+    {
+        $this->cache = new ArrayCache();
+        $this->cache->set('foo', '1', 0);
+
+        $this->cache
+            ->has('foo')
+            ->then($this->expectCallableOnceWith(false));
+    }
+
+    public function testHasWillResolveForExplicitNullValue()
+    {
+        $this->cache = new ArrayCache();
+        $this->cache->set('foo', null);
+
+        $this->cache
+            ->has('foo')
+            ->then($this->expectCallableOnceWith(true));
+    }
+
+    public function testHasWithLimitedSizeWillUpdateLRUInfo()
+    {
+        $this->cache = new ArrayCache(2);
+
+        $this->cache->set('foo', 1);
+        $this->cache->set('bar', 2);
+        $this->cache->has('foo')->then($this->expectCallableOnceWith(true));
+        $this->cache->set('baz', 3);
+
+        $this->cache->has('foo')->then($this->expectCallableOnceWith(1));
+        $this->cache->has('bar')->then($this->expectCallableOnceWith(false));
+        $this->cache->has('baz')->then($this->expectCallableOnceWith(3));
+    }
 }
