@@ -115,7 +115,7 @@ class ArrayCache implements CacheInterface
         return Promise\resolve(true);
     }
 
-    public function getMultiple($keys, $default = null)
+    public function getMultiple(array $keys, $default = null)
     {
         $values = array();
 
@@ -126,7 +126,7 @@ class ArrayCache implements CacheInterface
         return Promise\all($values);
     }
 
-    public function setMultiple($values, $ttl = null)
+    public function setMultiple(array $values, $ttl = null)
     {
         foreach ($values as $key => $value) {
             $this->set($key, $value, $ttl);
@@ -135,7 +135,7 @@ class ArrayCache implements CacheInterface
         return Promise\resolve(true);
     }
 
-    public function deleteMultiple($keys)
+    public function deleteMultiple(array $keys)
     {
         foreach ($keys as $key) {
             unset($this->data[$key], $this->expires[$key]);

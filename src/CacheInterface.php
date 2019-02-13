@@ -92,26 +92,29 @@ interface CacheInterface
     /**
      * Retrieves multiple cache items by their unique keys.
      *
-     * This method will resolve with the list of cached value on success or with the
-     * given `$default` value when no item can be found or when an error occurs.
+     * This method will resolve with an array of cached values on success or with the
+     * given `$default` value when an item can not be found or when an error occurs.
      * Similarly, an expired cache item (once the time-to-live is expired) is
      * considered a cache miss.
      *
      * ```php
-     * $cache
-     *     ->getMultiple(array('foo', 'bar'))
-     *     ->then('var_dump');
+     * $cache->getMultiple(array('name', 'age'))->then(function (array $values) {
+     *     $name = $values['name'] ?? 'User';
+     *     $age = $values['age'] ?? 'n/a';
+     *
+     *     echo $name . ' is ' . $age . PHP_EOL;
+     * });
      * ```
      *
-     * This example fetches the list of value for `foo` and `bar` keys and passes it to the
-     * `var_dump` function. You can use any of the composition provided by
-     * [promises](https://github.com/reactphp/promise).
+     * This example fetches the cache items for the `name` and `age` keys and
+     * prints some example output. You can use any of the composition provided
+     * by [promises](https://github.com/reactphp/promise).
      *
-     * @param iterable $keys    A list of keys that can obtained in a single operation.
-     * @param mixed    $default Default value to return for keys that do not exist.
-     * @return PromiseInterface
+     * @param string[] $keys A list of keys that can obtained in a single operation.
+     * @param mixed $default Default value to return for keys that do not exist.
+     * @return PromiseInterface<array> Returns a promise which resolves to an `array` of cached values
      */
-    public function getMultiple($keys, $default = null);
+    public function getMultiple(array $keys, $default = null);
 
     /**
      * Persists a set of key => value pairs in the cache, with an optional TTL.
@@ -133,24 +136,24 @@ interface CacheInterface
      * This example eventually sets the list of values - the key `foo` to 1 value
      * and the key `bar` to 2. If some of the keys already exist, they are overridden.
      *
-     * @param iterable $values A list of key => value pairs for a multiple-set operation.
-     * @param ?float   $ttl    Optional. The TTL value of this item.
-     * @return bool PromiseInterface Returns a promise which resolves to `true` on success or `false` on error
+     * @param array  $values A list of key => value pairs for a multiple-set operation.
+     * @param ?float $ttl    Optional. The TTL value of this item.
+     * @return PromiseInterface<bool> Returns a promise which resolves to `true` on success or `false` on error
      */
-    public function setMultiple($values, $ttl = null);
+    public function setMultiple(array $values, $ttl = null);
 
     /**
      * Deletes multiple cache items in a single operation.
      *
-     * @param iterable $keys A list of string-based keys to be deleted.
-     * @return bool PromiseInterface Returns a promise which resolves to `true` on success or `false` on error
+     * @param string[] $keys A list of string-based keys to be deleted.
+     * @return PromiseInterface<bool> Returns a promise which resolves to `true` on success or `false` on error
      */
-    public function deleteMultiple($keys);
+    public function deleteMultiple(array $keys);
 
     /**
      * Wipes clean the entire cache.
      *
-     * @return bool PromiseInterface Returns a promise which resolves to `true` on success or `false` on error
+     * @return PromiseInterface<bool> Returns a promise which resolves to `true` on success or `false` on error
      */
     public function clear();
 
@@ -177,7 +180,7 @@ interface CacheInterface
      * another script can remove it making the state of your app out of date.
      *
      * @param string $key The cache item key.
-     * @return PromiseInterface Returns a promise which resolves to `true` on success or `false` on error
+     * @return PromiseInterface<bool> Returns a promise which resolves to `true` on success or `false` on error
      */
     public function has($key);
 }

@@ -116,27 +116,30 @@ provide guarantees whether or not the item has been removed from cache.
 
 #### getMultiple()
 
-The `getMultiple(iterable $keys, mixed $default = null): PromiseInterface<iterable>` method can be used to
+The `getMultiple(string[] $keys, mixed $default = null): PromiseInterface<array>` method can be used to
 retrieve multiple cache items by their unique keys.
 
-This method will resolve with the list of cached value on success or with the
-given `$default` value when no item can be found or when an error occurs.
+This method will resolve with an array of cached values on success or with the
+given `$default` value when an item can not be found or when an error occurs.
 Similarly, an expired cache item (once the time-to-live is expired) is
 considered a cache miss.
 
 ```php
-$cache
-    ->getMultiple(array('foo', 'bar'))
-    ->then('var_dump');
+$cache->getMultiple(array('name', 'age'))->then(function (array $values) {
+    $name = $values['name'] ?? 'User';
+    $age = $values['age'] ?? 'n/a';
+
+    echo $name . ' is ' . $age . PHP_EOL;
+});
 ```
 
-This example fetches the list of value for `foo` and `bar` keys and passes it to the
-`var_dump` function. You can use any of the composition provided by
-[promises](https://github.com/reactphp/promise).
+This example fetches the cache items for the `name` and `age` keys and
+prints some example output. You can use any of the composition provided
+by [promises](https://github.com/reactphp/promise).
 
 #### setMultiple()
 
-The `setMultiple(iterable $values, ?float $ttl = null): PromiseInterface<bool>` method can be used to
+The `setMultiple(array $values, ?float $ttl = null): PromiseInterface<bool>` method can be used to
 persist a set of key => value pairs in the cache, with an optional TTL.
 
 This method will resolve with `true` on success or `false` when an error
@@ -158,7 +161,7 @@ and the key `bar` to `2`. If some of the keys already exist, they are overridden
 
 #### deleteMultiple()
 
-The `setMultiple(iterable $keys): PromiseInterface<bool>` method can be used to
+The `setMultiple(string[] $keys): PromiseInterface<bool>` method can be used to
 delete multiple cache items in a single operation.
 
 This method will resolve with `true` on success or `false` when an error
