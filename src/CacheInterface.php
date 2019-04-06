@@ -50,6 +50,17 @@ interface CacheInterface
      * This example eventually sets the value of the key `foo` to `bar`. If it
      * already exists, it is overridden.
      *
+     * This interface suggests that cache implementations SHOULD use a monotonic
+     * time source if available. Given that a monotonic time source is only
+     * available as of PHP 7.3 by default, cache implementations MAY fall back
+     * to using wall-clock time.
+     * While this does not affect many common use cases, this is an important
+     * distinction for programs that rely on a high time precision or on systems
+     * that are subject to discontinuous time adjustments (time jumps).
+     * This means that if you store a cache item with a TTL of 30s and then
+     * adjust your system time forward by 20s, the cache item SHOULD still
+     * expire in 30s.
+     *
      * @param string $key
      * @param mixed  $value
      * @param ?float $ttl

@@ -10,6 +10,7 @@ class ArrayCache implements CacheInterface
     private $limit;
     private $data = array();
     private $expires = array();
+    private $supportsHighResolution;
 
     /**
      * The `ArrayCache` provides an in-memory implementation of the [`CacheInterface`](#cacheinterface).
@@ -36,17 +37,30 @@ class ArrayCache implements CacheInterface
      * $cache->set('baz', '3');
      * ```
      *
+     * This cache implementation is known to rely on wall-clock time to schedule
+     * future cache expiration times when using any version before PHP 7.3,
+     * because a monotonic time source is only available as of PHP 7.3 (`hrtime()`).
+     * While this does not affect many common use cases, this is an important
+     * distinction for programs that rely on a high time precision or on systems
+     * that are subject to discontinuous time adjustments (time jumps).
+     * This means that if you store a cache item with a TTL of 30s on PHP < 7.3
+     * and then adjust your system time forward by 20s, the cache item may
+     * expire in 10s. See also [`set()`](#set) for more details.
+     *
      * @param int|null $limit maximum number of entries to store in the LRU cache
      */
     public function __construct($limit = null)
     {
         $this->limit = $limit;
+
+        // prefer high-resolution timer, available as of PHP 7.3+
+        $this->supportsHighResolution = \function_exists('hrtime');
     }
 
     public function get($key, $default = null)
     {
         // delete key if it is already expired => below will detect this as a cache miss
-        if (isset($this->expires[$key]) && $this->expires[$key] < \microtime(true)) {
+        if (isset($this->expires[$key]) && $this->now() - $this->expires[$key] > 0) {
             unset($this->data[$key], $this->expires[$key]);
         }
 
@@ -71,7 +85,7 @@ class ArrayCache implements CacheInterface
         // sort expiration times if TTL is given (first will expire first)
         unset($this->expires[$key]);
         if ($ttl !== null) {
-            $this->expires[$key] = \microtime(true) + $ttl;
+            $this->expires[$key] = $this->now() + $ttl;
             \asort($this->expires);
         }
 
@@ -84,7 +98,7 @@ class ArrayCache implements CacheInterface
 
             // check to see if the first in the list of expiring keys is already expired
             // if the first key is not expired, we have to overwrite by using LRU info
-            if ($key === null || $this->expires[$key] > \microtime(true)) {
+            if ($key === null || $this->now() - $this->expires[$key] < 0) {
                 \reset($this->data);
                 $key = \key($this->data);
             }
@@ -141,7 +155,7 @@ class ArrayCache implements CacheInterface
     public function has($key)
     {
         // delete key if it is already expired
-        if (isset($this->expires[$key]) && $this->expires[$key] < \microtime(true)) {
+        if (isset($this->expires[$key]) && $this->now() - $this->expires[$key] > 0) {
             unset($this->data[$key], $this->expires[$key]);
         }
 
@@ -155,5 +169,13 @@ class ArrayCache implements CacheInterface
         $this->data[$key] = $value;
 
         return Promise\resolve(true);
+    }
+
+    /**
+     * @return float
+     */
+    private function now()
+    {
+        return $this->supportsHighResolution ? \hrtime(true) * 1e-9 : \microtime(true);
     }
 }
