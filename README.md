@@ -85,6 +85,17 @@ $cache->set('foo', 'bar', 60);
 This example eventually sets the value of the key `foo` to `bar`. If it
 already exists, it is overridden.
 
+This interface suggests that cache implementations SHOULD use a monotonic
+time source if available. Given that a monotonic time source is only
+available as of PHP 7.3 by default, cache implementations MAY fall back
+to using wall-clock time.
+While this does not affect many common use cases, this is an important
+distinction for programs that rely on a high time precision or on systems
+that are subject to discontinuous time adjustments (time jumps).
+This means that if you store a cache item with a TTL of 30s and then
+adjust your system time forward by 20s, the cache item SHOULD still
+expire in 30s.
+
 #### delete()
 
 The `delete(string $key): PromiseInterface<bool>` method can be used to
@@ -229,6 +240,16 @@ $cache->set('foo', '1');
 $cache->set('bar', '2');
 $cache->set('baz', '3');
 ```
+
+This cache implementation is known to rely on wall-clock time to schedule
+future cache expiration times when using any version before PHP 7.3,
+because a monotonic time source is only available as of PHP 7.3 (`hrtime()`).
+While this does not affect many common use cases, this is an important
+distinction for programs that rely on a high time precision or on systems
+that are subject to discontinuous time adjustments (time jumps).
+This means that if you store a cache item with a TTL of 30s on PHP < 7.3
+and then adjust your system time forward by 20s, the cache item may
+expire in 10s. See also [`set()`](#set) for more details.
 
 ## Common usage
 
