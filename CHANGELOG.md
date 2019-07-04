@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.6.0 (2019-07-04)
+
+*   Feature / BC break: Add support for `getMultiple()`, `setMultiple()`, `deleteMultiple()`, `clear()` and `has()`
+    supporting multiple cache items (inspired by PSR-16).
+    (#32 by @krlv and #37 by @clue)
+
+*   Documentation for TTL precision with millisecond accuracy or below and
+    use high-resolution timer for cache TTL on PHP 7.3+.
+    (#35 and #38 by @clue)
+
+*   Improve API documentation and allow legacy HHVM to fail in Travis CI config.
+    (#34 and #36 by @clue)
+
+*   Prefix all global functions calls with \ to skip the look up and resolve process and go straight to the global function.
+    (#31 by @WyriHaximus)
+
 ## 0.5.0 (2018-06-25)
 
 * Improve documentation by describing what is expected of a class implementing `CacheInterface`. 
