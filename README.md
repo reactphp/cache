@@ -85,6 +85,14 @@ $cache->set('foo', 'bar', 60);
 This example eventually sets the value of the key `foo` to `bar`. If it
 already exists, it is overridden.
 
+This interface does not enforce any particular TTL resolution, so special
+care may have to be taken if you rely on very high precision with
+millisecond accuracy or below. Cache implementations SHOULD work on a
+best effort basis and SHOULD provide at least second accuracy unless
+otherwise noted. Many existing cache implementations are known to provide
+microsecond or millisecond accuracy, but it's generally not recommended
+to rely on this high precision.
+
 This interface suggests that cache implementations SHOULD use a monotonic
 time source if available. Given that a monotonic time source is only
 available as of PHP 7.3 by default, cache implementations MAY fall back
