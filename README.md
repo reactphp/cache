@@ -1,6 +1,6 @@
 # Cache
 
-[![Build Status](https://secure.travis-ci.org/reactphp/cache.png?branch=master)](http://travis-ci.org/reactphp/cache)
+[![Build Status](https://travis-ci.org/reactphp/cache.svg?branch=master)](https://travis-ci.org/reactphp/cache)
 
 Async, [Promise](https://github.com/reactphp/promise)-based cache interface
 for [ReactPHP](https://reactphp.org/).
@@ -332,10 +332,11 @@ fetched from the database.
 The recommended way to install this library is [through Composer](https://getcomposer.org).
 [New to Composer?](https://getcomposer.org/doc/00-intro.md)
 
+This project follows [SemVer](https://semver.org/).
 This will install the latest supported version:
 
 ```bash
-$ composer require react/cache:^0.6
+$ composer require react/cache:^1.0
 ```
 
 See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.
