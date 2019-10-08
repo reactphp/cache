@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": ">=5.3.0",
-        "react/promise": "~2.0|~1.1"
+        "react/promise": "^3.0 || ^2.0 || ^1.1"
     },
     "autoload": {
         "psr-4": { "React\\Cache\\": "src/" }
