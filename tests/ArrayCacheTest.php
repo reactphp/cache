@@ -11,7 +11,10 @@ class ArrayCacheTest extends TestCase
      */
     private $cache;
 
-    public function setUp()
+    /**
+     * @before
+     */
+    public function setUpArrayCache()
     {
         $this->cache = new ArrayCache();
     }
