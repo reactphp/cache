@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.0 (2020-09-18)
+
+*   Feature: Forward compatibility with react/promise 3.
+    (#39 by @WyriHaximus)
+
+*   Add `.gitattributes` to exclude dev files from exports.
+    (#40 by @reedy)
+
+*   Improve test suite, update to support PHP 8 and PHPUnit 9.3.
+    (#41 and #43 by @SimonFrings and #42 by @WyriHaximus)
+
 ## 1.0.0 (2019-07-11)
 
 *   First stable LTS release, now following [SemVer](https://semver.org/).
