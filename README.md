@@ -1,6 +1,6 @@
 # Cache
 
-[![Build Status](https://travis-ci.org/reactphp/cache.svg?branch=master)](https://travis-ci.org/reactphp/cache)
+[![CI status](https://github.com/reactphp/cache/workflows/CI/badge.svg)](https://github.com/reactphp/cache/actions)
 
 Async, [Promise](https://github.com/reactphp/promise)-based cache interface
 for [ReactPHP](https://reactphp.org/).
