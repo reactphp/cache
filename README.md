@@ -1,6 +1,6 @@
 # Cache
 
-[![Build Status](https://travis-ci.org/reactphp/cache.svg?branch=master)](https://travis-ci.org/reactphp/cache)
+[![CI status](https://github.com/reactphp/cache/workflows/CI/badge.svg)](https://github.com/reactphp/cache/actions)
 
 Async, [Promise](https://github.com/reactphp/promise)-based cache interface
 for [ReactPHP](https://reactphp.org/).
@@ -342,7 +342,7 @@ $ composer require react/cache:^1.1
 See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.
 
 This project aims to run on any platform and thus does not require any PHP
-extensions and supports running on legacy PHP 5.3 through current PHP 7+ and
+extensions and supports running on legacy PHP 5.3 through current PHP 8+ and
 HHVM.
 It's *highly recommended to use PHP 7+* for this project.
 
