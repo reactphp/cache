@@ -1,6 +1,6 @@
 # Cache
 
-[![CI status](https://github.com/reactphp/cache/workflows/CI/badge.svg)](https://github.com/reactphp/cache/actions)
+[![CI status](https://github.com/reactphp/cache/actions/workflows/ci.yml/badge.svg)](https://github.com/reactphp/cache/actions)
 [![installs on Packagist](https://img.shields.io/packagist/dt/react/cache?color=blue&label=installs%20on%20Packagist)](https://packagist.org/packages/react/cache)
 
 Async, [Promise](https://github.com/reactphp/promise)-based cache interface
