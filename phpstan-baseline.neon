@@ -1,0 +1,216 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Method React\\\\Cache\\\\ArrayCache\\:\\:getMultiple\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ArrayCache.php
+
+		-
+			message: "#^Method React\\\\Cache\\\\ArrayCache\\:\\:setMultiple\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ArrayCache.php
+
+		-
+			message: "#^Property React\\\\Cache\\\\ArrayCache\\:\\:\\$data has no type specified\\.$#"
+			count: 1
+			path: src/ArrayCache.php
+
+		-
+			message: "#^Property React\\\\Cache\\\\ArrayCache\\:\\:\\$expires has no type specified\\.$#"
+			count: 1
+			path: src/ArrayCache.php
+
+		-
+			message: "#^Property React\\\\Cache\\\\ArrayCache\\:\\:\\$limit has no type specified\\.$#"
+			count: 1
+			path: src/ArrayCache.php
+
+		-
+			message: "#^Property React\\\\Cache\\\\ArrayCache\\:\\:\\$supportsHighResolution has no type specified\\.$#"
+			count: 1
+			path: src/ArrayCache.php
+
+		-
+			message: "#^Method React\\\\Cache\\\\CacheInterface\\:\\:getMultiple\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CacheInterface.php
+
+		-
+			message: "#^Method React\\\\Cache\\\\CacheInterface\\:\\:setMultiple\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CacheInterface.php
+
+		-
+			message: "#^PHPDoc tag @return contains generic type React\\\\Promise\\\\PromiseInterface\\<array\\> but interface React\\\\Promise\\\\PromiseInterface is not generic\\.$#"
+			count: 1
+			path: src/CacheInterface.php
+
+		-
+			message: "#^PHPDoc tag @return contains generic type React\\\\Promise\\\\PromiseInterface\\<bool\\> but interface React\\\\Promise\\\\PromiseInterface is not generic\\.$#"
+			count: 6
+			path: src/CacheInterface.php
+
+		-
+			message: "#^PHPDoc tag @return contains generic type React\\\\Promise\\\\PromiseInterface\\<mixed\\> but interface React\\\\Promise\\\\PromiseInterface is not generic\\.$#"
+			count: 1
+			path: src/CacheInterface.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:deleteShouldDeleteKey\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:getShouldResolvePromiseWithNullForNonExistentKey\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:hasShouldResolvePromiseForExistingKey\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:hasShouldResolvePromiseForNonExistentKey\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:setShouldSetKey\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:setUpArrayCache\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:testClearShouldClearCache\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:testDeleteMultiple\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:testGetMultiple\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:testGetWillResolveWithDefaultIfItemIsExpired\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:testGetWillResolveWithDefaultValueForCacheMiss\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:testGetWillResolveWithExplicitNullValueForCacheHit\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:testGetWillResolveWithNullForCacheMiss\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:testGetWillResolveWithValueIfItemIsNotExpired\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:testGetWithLimitedSizeWillUpdateLRUInfo\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:testHasWillResolveForExplicitNullValue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:testHasWillResolveIfItemIsExpired\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:testHasWillResolveIfItemIsNotExpired\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:testHasWithLimitedSizeWillUpdateLRUInfo\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:testLimitSizeToOneWillOnlyReturnLastWrite\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:testLimitSizeToZeroDoesNotStoreAnyData\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:testOverwriteWithLimitedSizeWillUpdateLRUInfo\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:testSetMultiple\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:testSetWillOverwritOldestItemIfNoEntryIsExpired\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\ArrayCacheTest\\:\\:testSetWillOverwriteExpiredItemIfAnyEntryIsExpired\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/ArrayCacheTest.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\TestCase\\:\\:createCallableMock\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\TestCase\\:\\:expectCallableExactly\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\TestCase\\:\\:expectCallableExactly\\(\\) has parameter \\$amount with no type specified\\.$#"
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\TestCase\\:\\:expectCallableNever\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\TestCase\\:\\:expectCallableOnce\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\TestCase\\:\\:expectCallableOnceWith\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: "#^Method React\\\\Tests\\\\Cache\\\\TestCase\\:\\:expectCallableOnceWith\\(\\) has parameter \\$param with no type specified\\.$#"
+			count: 1
+			path: tests/TestCase.php
