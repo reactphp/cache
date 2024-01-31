@@ -6,6 +6,14 @@
 Async, [Promise](https://github.com/reactphp/promise)-based cache interface
 for [ReactPHP](https://reactphp.org/).
 
+> **Development version:** This branch contains the code for the upcoming v3
+> release. For the code of the current stable v1 release, check out the
+> [`1.x` branch](https://github.com/reactphp/cache/tree/1.x).
+>
+> The upcoming v3 release will be the way forward for this package. However,
+> we will still actively support v1 for those not yet on the latest version.
+> See also [installation instructions](#install) for more details.
+
 The cache component provides a
 [Promise](https://github.com/reactphp/promise)-based
 [`CacheInterface`](#cacheinterface) and an in-memory [`ArrayCache`](#arraycache)
@@ -333,11 +341,11 @@ fetched from the database.
 The recommended way to install this library is [through Composer](https://getcomposer.org).
 [New to Composer?](https://getcomposer.org/doc/00-intro.md)
 
-This project follows [SemVer](https://semver.org/).
-This will install the latest supported version:
+Once released, this project will follow [SemVer](https://semver.org/).
+At the moment, this will install the latest development version:
 
 ```bash
-composer require react/cache:^1.2
+composer require react/cache:^3@dev
 ```
 
 See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.
