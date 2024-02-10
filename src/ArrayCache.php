@@ -2,14 +2,14 @@
 
 namespace React\Cache;
 
-use React\Promise;
-use React\Promise\PromiseInterface;
+use function React\Promise\all;
+use function React\Promise\resolve;
 
 class ArrayCache implements CacheInterface
 {
     private $limit;
-    private $data = array();
-    private $expires = array();
+    private $data = [];
+    private $expires = [];
     private $supportsHighResolution;
 
     /**
@@ -65,7 +65,7 @@ class ArrayCache implements CacheInterface
         }
 
         if (!\array_key_exists($key, $this->data)) {
-            return Promise\resolve($default);
+            return resolve($default);
         }
 
         // remove and append to end of array to keep track of LRU info
@@ -73,7 +73,7 @@ class ArrayCache implements CacheInterface
         unset($this->data[$key]);
         $this->data[$key] = $value;
 
-        return Promise\resolve($value);
+        return resolve($value);
     }
 
     public function set($key, $value, $ttl = null)
@@ -105,25 +105,25 @@ class ArrayCache implements CacheInterface
             unset($this->data[$key], $this->expires[$key]);
         }
 
-        return Promise\resolve(true);
+        return resolve(true);
     }
 
     public function delete($key)
     {
         unset($this->data[$key], $this->expires[$key]);
 
-        return Promise\resolve(true);
+        return resolve(true);
     }
 
     public function getMultiple(array $keys, $default = null)
     {
-        $values = array();
+        $values = [];
 
         foreach ($keys as $key) {
             $values[$key] = $this->get($key, $default);
         }
 
-        return Promise\all($values);
+        return all($values);
     }
 
     public function setMultiple(array $values, $ttl = null)
@@ -132,7 +132,7 @@ class ArrayCache implements CacheInterface
             $this->set($key, $value, $ttl);
         }
 
-        return Promise\resolve(true);
+        return resolve(true);
     }
 
     public function deleteMultiple(array $keys)
@@ -141,15 +141,15 @@ class ArrayCache implements CacheInterface
             unset($this->data[$key], $this->expires[$key]);
         }
 
-        return Promise\resolve(true);
+        return resolve(true);
     }
 
     public function clear()
     {
-        $this->data = array();
-        $this->expires = array();
+        $this->data = [];
+        $this->expires = [];
 
-        return Promise\resolve(true);
+        return resolve(true);
     }
 
     public function has($key)
@@ -160,7 +160,7 @@ class ArrayCache implements CacheInterface
         }
 
         if (!\array_key_exists($key, $this->data)) {
-            return Promise\resolve(false);
+            return resolve(false);
         }
 
         // remove and append to end of array to keep track of LRU info
@@ -168,7 +168,7 @@ class ArrayCache implements CacheInterface
         unset($this->data[$key]);
         $this->data[$key] = $value;
 
-        return Promise\resolve(true);
+        return resolve(true);
     }
 
     /**

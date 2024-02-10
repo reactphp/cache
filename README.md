@@ -142,7 +142,7 @@ Similarly, an expired cache item (once the time-to-live is expired) is
 considered a cache miss.
 
 ```php
-$cache->getMultiple(array('name', 'age'))->then(function (array $values) {
+$cache->getMultiple(['name', 'age'])->then(function (array $values) {
     $name = $values['name'] ?? 'User';
     $age = $values['age'] ?? 'n/a';
 
@@ -170,7 +170,7 @@ supports. Trying to access an expired cache items results in a cache miss,
 see also [`getMultiple()`](#getmultiple).
 
 ```php
-$cache->setMultiple(array('foo' => 1, 'bar' => 2), 60);
+$cache->setMultiple(['foo' => 1, 'bar' => 2], 60);
 ```
 
 This example eventually sets the list of values - the key `foo` to `1` value 
@@ -187,7 +187,7 @@ to `true`. If the cache implementation has to go over the network to
 delete it, it may take a while.
 
 ```php
-$cache->deleteMultiple(array('foo', 'bar, 'baz'));
+$cache->deleteMultiple(['foo', 'bar, 'baz']);
 ```
 
 This example eventually deletes keys `foo`, `bar` and `baz` from the cache. 
@@ -322,7 +322,7 @@ public function getAndCacheFooFromDb()
 {
     return $this->db
         ->get('foo')
-        ->then(array($this, 'cacheFooFromDb'));
+        ->then([$this, 'cacheFooFromDb']);
 }
 
 public function cacheFooFromDb($foo)
