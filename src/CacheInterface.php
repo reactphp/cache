@@ -106,7 +106,7 @@ interface CacheInterface
      * considered a cache miss.
      *
      * ```php
-     * $cache->getMultiple(array('name', 'age'))->then(function (array $values) {
+     * $cache->getMultiple(['name', 'age'])->then(function (array $values) {
      *     $name = $values['name'] ?? 'User';
      *     $age = $values['age'] ?? 'n/a';
      *
@@ -138,7 +138,7 @@ interface CacheInterface
      * see also [`get()`](#get).
      *
      * ```php
-     * $cache->setMultiple(array('foo' => 1, 'bar' => 2), 60);
+     * $cache->setMultiple(['foo' => 1, 'bar' => 2], 60);
      * ```
      *
      * This example eventually sets the list of values - the key `foo` to 1 value
