@@ -28,7 +28,7 @@ interface CacheInterface
      * @param mixed  $default Default value to return for cache miss or null if not given.
      * @return PromiseInterface<mixed>
      */
-    public function get($key, $default = null);
+    public function get(string $key, $default = null): PromiseInterface;
 
     /**
      * Stores an item in the cache.
@@ -74,7 +74,7 @@ interface CacheInterface
      * @param ?float $ttl
      * @return PromiseInterface<bool> Returns a promise which resolves to `true` on success or `false` on error
      */
-    public function set($key, $value, $ttl = null);
+    public function set(string $key, $value, ?float $ttl = null): PromiseInterface;
 
     /**
      * Deletes an item from the cache.
@@ -95,7 +95,7 @@ interface CacheInterface
      * @param string $key
      * @return PromiseInterface<bool> Returns a promise which resolves to `true` on success or `false` on error
      */
-    public function delete($key);
+    public function delete(string $key): PromiseInterface;
 
     /**
      * Retrieves multiple cache items by their unique keys.
@@ -122,7 +122,7 @@ interface CacheInterface
      * @param mixed $default Default value to return for keys that do not exist.
      * @return PromiseInterface<array> Returns a promise which resolves to an `array` of cached values
      */
-    public function getMultiple(array $keys, $default = null);
+    public function getMultiple(array $keys, $default = null): PromiseInterface;
 
     /**
      * Persists a set of key => value pairs in the cache, with an optional TTL.
@@ -148,7 +148,7 @@ interface CacheInterface
      * @param ?float $ttl    Optional. The TTL value of this item.
      * @return PromiseInterface<bool> Returns a promise which resolves to `true` on success or `false` on error
      */
-    public function setMultiple(array $values, $ttl = null);
+    public function setMultiple(array $values, ?float $ttl = null): PromiseInterface;
 
     /**
      * Deletes multiple cache items in a single operation.
@@ -156,14 +156,14 @@ interface CacheInterface
      * @param string[] $keys A list of string-based keys to be deleted.
      * @return PromiseInterface<bool> Returns a promise which resolves to `true` on success or `false` on error
      */
-    public function deleteMultiple(array $keys);
+    public function deleteMultiple(array $keys): PromiseInterface;
 
     /**
      * Wipes clean the entire cache.
      *
      * @return PromiseInterface<bool> Returns a promise which resolves to `true` on success or `false` on error
      */
-    public function clear();
+    public function clear(): PromiseInterface;
 
     /**
      * Determines whether an item is present in the cache.
@@ -190,5 +190,5 @@ interface CacheInterface
      * @param string $key The cache item key.
      * @return PromiseInterface<bool> Returns a promise which resolves to `true` on success or `false` on error
      */
-    public function has($key);
+    public function has(string $key): PromiseInterface;
 }
