@@ -2,6 +2,7 @@
 
 namespace React\Cache;
 
+use React\Promise\PromiseInterface;
 use function React\Promise\all;
 use function React\Promise\resolve;
 
@@ -49,7 +50,7 @@ class ArrayCache implements CacheInterface
      *
      * @param int|null $limit maximum number of entries to store in the LRU cache
      */
-    public function __construct($limit = null)
+    public function __construct(?int $limit = null)
     {
         $this->limit = $limit;
 
@@ -57,7 +58,7 @@ class ArrayCache implements CacheInterface
         $this->supportsHighResolution = \function_exists('hrtime');
     }
 
-    public function get($key, $default = null)
+    public function get(string $key, $default = null): PromiseInterface
     {
         // delete key if it is already expired => below will detect this as a cache miss
         if (isset($this->expires[$key]) && $this->now() - $this->expires[$key] > 0) {
@@ -76,7 +77,7 @@ class ArrayCache implements CacheInterface
         return resolve($value);
     }
 
-    public function set($key, $value, $ttl = null)
+    public function set(string $key, $value, ?float $ttl = null): PromiseInterface
     {
         // unset before setting to ensure this entry will be added to end of array (LRU info)
         unset($this->data[$key]);
@@ -108,14 +109,14 @@ class ArrayCache implements CacheInterface
         return resolve(true);
     }
 
-    public function delete($key)
+    public function delete(string $key): PromiseInterface
     {
         unset($this->data[$key], $this->expires[$key]);
 
         return resolve(true);
     }
 
-    public function getMultiple(array $keys, $default = null)
+    public function getMultiple(array $keys, $default = null): PromiseInterface
     {
         $values = [];
 
@@ -126,7 +127,7 @@ class ArrayCache implements CacheInterface
         return all($values);
     }
 
-    public function setMultiple(array $values, $ttl = null)
+    public function setMultiple(array $values, ?float $ttl = null): PromiseInterface
     {
         foreach ($values as $key => $value) {
             $this->set($key, $value, $ttl);
@@ -135,7 +136,7 @@ class ArrayCache implements CacheInterface
         return resolve(true);
     }
 
-    public function deleteMultiple(array $keys)
+    public function deleteMultiple(array $keys): PromiseInterface
     {
         foreach ($keys as $key) {
             unset($this->data[$key], $this->expires[$key]);
@@ -144,7 +145,7 @@ class ArrayCache implements CacheInterface
         return resolve(true);
     }
 
-    public function clear()
+    public function clear(): PromiseInterface
     {
         $this->data = [];
         $this->expires = [];
@@ -152,7 +153,7 @@ class ArrayCache implements CacheInterface
         return resolve(true);
     }
 
-    public function has($key)
+    public function has(string $key): PromiseInterface
     {
         // delete key if it is already expired
         if (isset($this->expires[$key]) && $this->now() - $this->expires[$key] > 0) {
@@ -171,10 +172,7 @@ class ArrayCache implements CacheInterface
         return resolve(true);
     }
 
-    /**
-     * @return float
-     */
-    private function now()
+    private function now(): float
     {
         return $this->supportsHighResolution ? \hrtime(true) * 1e-9 : \microtime(true);
     }
