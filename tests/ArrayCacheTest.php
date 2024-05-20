@@ -14,93 +14,50 @@ class ArrayCacheTest extends TestCase
     /**
      * @before
      */
-    public function setUpArrayCache()
+    public function setUpArrayCache(): void
     {
         $this->cache = new ArrayCache();
     }
 
     /** @test */
-    public function getShouldResolvePromiseWithNullForNonExistentKey()
+    public function getShouldResolvePromiseWithNullForNonExistentKey(): void
     {
-        $success = $this->createCallableMock();
-        $success
-            ->expects($this->once())
-            ->method('__invoke')
-            ->with(null);
-
-        $this->cache
-            ->get('foo')
-            ->then(
-                $success,
-                $this->expectCallableNever()
-            );
+        $this->cache->get('foo')->then($this->expectCallableOnceWith(null));
     }
 
     /** @test */
-    public function setShouldSetKey()
+    public function setShouldSetKey(): void
     {
-        $setPromise = $this->cache
-            ->set('foo', 'bar');
+        $this->cache->set('foo', 'bar')->then($this->expectCallableOnceWith(true));
 
-        $mock = $this->createCallableMock();
-        $mock
-            ->expects($this->once())
-            ->method('__invoke')
-            ->with($this->identicalTo(true));
-
-        $setPromise->then($mock);
-
-        $success = $this->createCallableMock();
-        $success
-            ->expects($this->once())
-            ->method('__invoke')
-            ->with('bar');
-
-        $this->cache
-            ->get('foo')
-            ->then($success);
+        $this->cache->get('foo')->then($this->expectCallableOnceWith('bar'));
     }
 
     /** @test */
-    public function deleteShouldDeleteKey()
+    public function deleteShouldDeleteKey(): void
     {
-        $this->cache
-            ->set('foo', 'bar');
+        $this->cache->set('foo', 'bar');
 
-        $deletePromise = $this->cache
-            ->delete('foo');
+        $this->cache->delete('foo')->then($this->expectCallableOnceWith(true));
 
-        $mock = $this->createCallableMock();
-        $mock
-            ->expects($this->once())
-            ->method('__invoke')
-            ->with($this->identicalTo(true));
-
-        $deletePromise->then($mock);
-
-        $this->cache
-            ->get('foo')
-            ->then(
-                $this->expectCallableOnce(),
-                $this->expectCallableNever()
-            );
+        $this->cache->get('foo')->then($this->expectCallableOnceWith(null));
     }
 
-    public function testGetWillResolveWithNullForCacheMiss()
+    public function testGetWillResolveWithNullForCacheMiss(): void
     {
         $this->cache = new ArrayCache();
 
         $this->cache->get('foo')->then($this->expectCallableOnceWith(null));
     }
 
-    public function testGetWillResolveWithDefaultValueForCacheMiss()
+    public function testGetWillResolveWithDefaultValueForCacheMiss(): void
     {
         $this->cache = new ArrayCache();
 
         $this->cache->get('foo', 'bar')->then($this->expectCallableOnceWith('bar'));
     }
 
-    public function testGetWillResolveWithExplicitNullValueForCacheHit()
+    public function testGetWillResolveWithExplicitNullValueForCacheHit(): void
     {
         $this->cache = new ArrayCache();
 
@@ -108,7 +65,7 @@ class ArrayCacheTest extends TestCase
         $this->cache->get('foo', 'bar')->then($this->expectCallableOnceWith(null));
     }
 
-    public function testLimitSizeToZeroDoesNotStoreAnyData()
+    public function testLimitSizeToZeroDoesNotStoreAnyData(): void
     {
         $this->cache = new ArrayCache(0);
 
@@ -117,7 +74,7 @@ class ArrayCacheTest extends TestCase
         $this->cache->get('foo')->then($this->expectCallableOnceWith(null));
     }
 
-    public function testLimitSizeToOneWillOnlyReturnLastWrite()
+    public function testLimitSizeToOneWillOnlyReturnLastWrite(): void
     {
         $this->cache = new ArrayCache(1);
 
@@ -128,7 +85,7 @@ class ArrayCacheTest extends TestCase
         $this->cache->get('bar')->then($this->expectCallableOnceWith('2'));
     }
 
-    public function testOverwriteWithLimitedSizeWillUpdateLRUInfo()
+    public function testOverwriteWithLimitedSizeWillUpdateLRUInfo(): void
     {
         $this->cache = new ArrayCache(2);
 
@@ -142,7 +99,7 @@ class ArrayCacheTest extends TestCase
         $this->cache->get('baz')->then($this->expectCallableOnceWith('4'));
     }
 
-    public function testGetWithLimitedSizeWillUpdateLRUInfo()
+    public function testGetWithLimitedSizeWillUpdateLRUInfo(): void
     {
         $this->cache = new ArrayCache(2);
 
@@ -156,7 +113,7 @@ class ArrayCacheTest extends TestCase
         $this->cache->get('baz')->then($this->expectCallableOnceWith('3'));
     }
 
-    public function testGetWillResolveWithValueIfItemIsNotExpired()
+    public function testGetWillResolveWithValueIfItemIsNotExpired(): void
     {
         $this->cache = new ArrayCache();
 
@@ -165,7 +122,7 @@ class ArrayCacheTest extends TestCase
         $this->cache->get('foo')->then($this->expectCallableOnceWith('1'));
     }
 
-    public function testGetWillResolveWithDefaultIfItemIsExpired()
+    public function testGetWillResolveWithDefaultIfItemIsExpired(): void
     {
         $this->cache = new ArrayCache();
 
@@ -174,7 +131,7 @@ class ArrayCacheTest extends TestCase
         $this->cache->get('foo')->then($this->expectCallableOnceWith(null));
     }
 
-    public function testSetWillOverwritOldestItemIfNoEntryIsExpired()
+    public function testSetWillOverwritOldestItemIfNoEntryIsExpired(): void
     {
         $this->cache = new ArrayCache(2);
 
@@ -185,7 +142,7 @@ class ArrayCacheTest extends TestCase
         $this->cache->get('foo')->then($this->expectCallableOnceWith(null));
     }
 
-    public function testSetWillOverwriteExpiredItemIfAnyEntryIsExpired()
+    public function testSetWillOverwriteExpiredItemIfAnyEntryIsExpired(): void
     {
         $this->cache = new ArrayCache(2);
 
@@ -197,7 +154,7 @@ class ArrayCacheTest extends TestCase
         $this->cache->get('bar')->then($this->expectCallableOnceWith(null));
     }
 
-    public function testGetMultiple()
+    public function testGetMultiple(): void
     {
         $this->cache = new ArrayCache();
         $this->cache->set('foo', '1');
@@ -207,7 +164,7 @@ class ArrayCacheTest extends TestCase
             ->then($this->expectCallableOnceWith(['foo' => '1', 'bar' => 'baz']));
     }
 
-    public function testSetMultiple()
+    public function testSetMultiple(): void
     {
         $this->cache = new ArrayCache();
         $this->cache->setMultiple(['foo' => '1', 'bar' => '2'], 10);
@@ -217,7 +174,7 @@ class ArrayCacheTest extends TestCase
             ->then($this->expectCallableOnceWith(['foo' => '1', 'bar' => '2']));
     }
 
-    public function testDeleteMultiple()
+    public function testDeleteMultiple(): void
     {
         $this->cache = new ArrayCache();
         $this->cache->setMultiple(['foo' => 1, 'bar' => 2, 'baz' => 3]);
@@ -239,7 +196,7 @@ class ArrayCacheTest extends TestCase
             ->then($this->expectCallableOnceWith(false));
     }
 
-    public function testClearShouldClearCache()
+    public function testClearShouldClearCache(): void
     {
         $this->cache = new ArrayCache();
         $this->cache->setMultiple(['foo' => 1, 'bar' => 2, 'baz' => 3]);
@@ -259,7 +216,7 @@ class ArrayCacheTest extends TestCase
             ->then($this->expectCallableOnceWith(false));
     }
 
-    public function hasShouldResolvePromiseForExistingKey()
+    public function hasShouldResolvePromiseForExistingKey(): void
     {
         $this->cache = new ArrayCache();
         $this->cache->set('foo', 'bar');
@@ -269,7 +226,7 @@ class ArrayCacheTest extends TestCase
             ->then($this->expectCallableOnceWith(true));
     }
 
-    public function hasShouldResolvePromiseForNonExistentKey()
+    public function hasShouldResolvePromiseForNonExistentKey(): void
     {
         $this->cache = new ArrayCache();
         $this->cache->set('foo', 'bar');
@@ -279,7 +236,7 @@ class ArrayCacheTest extends TestCase
             ->then($this->expectCallableOnceWith(false));
     }
 
-    public function testHasWillResolveIfItemIsNotExpired()
+    public function testHasWillResolveIfItemIsNotExpired(): void
     {
         $this->cache = new ArrayCache();
         $this->cache->set('foo', '1', 10);
@@ -289,7 +246,7 @@ class ArrayCacheTest extends TestCase
             ->then($this->expectCallableOnceWith(true));
     }
 
-    public function testHasWillResolveIfItemIsExpired()
+    public function testHasWillResolveIfItemIsExpired(): void
     {
         $this->cache = new ArrayCache();
         $this->cache->set('foo', '1', 0);
@@ -299,7 +256,7 @@ class ArrayCacheTest extends TestCase
             ->then($this->expectCallableOnceWith(false));
     }
 
-    public function testHasWillResolveForExplicitNullValue()
+    public function testHasWillResolveForExplicitNullValue(): void
     {
         $this->cache = new ArrayCache();
         $this->cache->set('foo', null);
@@ -309,7 +266,7 @@ class ArrayCacheTest extends TestCase
             ->then($this->expectCallableOnceWith(true));
     }
 
-    public function testHasWithLimitedSizeWillUpdateLRUInfo()
+    public function testHasWithLimitedSizeWillUpdateLRUInfo(): void
     {
         $this->cache = new ArrayCache(2);
 

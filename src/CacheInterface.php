@@ -106,7 +106,7 @@ interface CacheInterface
      * considered a cache miss.
      *
      * ```php
-     * $cache->getMultiple(['name', 'age'])->then(function (array $values) {
+     * $cache->getMultiple(['name', 'age'])->then(function (array $values): void {
      *     $name = $values['name'] ?? 'User';
      *     $age = $values['age'] ?? 'n/a';
      *
@@ -120,7 +120,7 @@ interface CacheInterface
      *
      * @param string[] $keys A list of keys that can obtained in a single operation.
      * @param mixed $default Default value to return for keys that do not exist.
-     * @return PromiseInterface<array> Returns a promise which resolves to an `array` of cached values
+     * @return PromiseInterface<array<string,mixed>> Returns a promise which resolves to an `array` of cached values
      */
     public function getMultiple(array $keys, $default = null): PromiseInterface;
 
@@ -144,8 +144,8 @@ interface CacheInterface
      * This example eventually sets the list of values - the key `foo` to 1 value
      * and the key `bar` to 2. If some of the keys already exist, they are overridden.
      *
-     * @param array  $values A list of key => value pairs for a multiple-set operation.
-     * @param ?float $ttl    Optional. The TTL value of this item.
+     * @param array<string,mixed> $values A list of key => value pairs for a multiple-set operation.
+     * @param ?float $ttl Optional. The TTL value of this item.
      * @return PromiseInterface<bool> Returns a promise which resolves to `true` on success or `false` on error
      */
     public function setMultiple(array $values, ?float $ttl = null): PromiseInterface;

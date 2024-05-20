@@ -8,9 +8,16 @@ use function React\Promise\resolve;
 
 class ArrayCache implements CacheInterface
 {
+    /** @var ?int */
     private $limit;
+
+    /** @var array<string,mixed> */
     private $data = [];
+
+    /** @var array<string,float> */
     private $expires = [];
+
+    /** @var bool */
     private $supportsHighResolution;
 
     /**
@@ -124,6 +131,7 @@ class ArrayCache implements CacheInterface
             $values[$key] = $this->get($key, $default);
         }
 
+        /** @var PromiseInterface<array<string, mixed>> */
         return all($values);
     }
 
