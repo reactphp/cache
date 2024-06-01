@@ -164,10 +164,34 @@ class ArrayCacheTest extends TestCase
             ->then($this->expectCallableOnceWith(['foo' => '1', 'bar' => 'baz']));
     }
 
+    public function testGetMultipleWithIterableKeysFromGenerator(): void
+    {
+        $this->cache = new ArrayCache();
+        $this->cache->set('foo', '1');
+
+        $keys = (function (): \Generator { yield from ['foo', 'bar']; })();
+
+        $this->cache
+            ->getMultiple($keys, 'baz')
+            ->then($this->expectCallableOnceWith(['foo' => '1', 'bar' => 'baz']));
+    }
+
     public function testSetMultiple(): void
     {
         $this->cache = new ArrayCache();
         $this->cache->setMultiple(['foo' => '1', 'bar' => '2'], 10);
+
+        $this->cache
+            ->getMultiple(['foo', 'bar'])
+            ->then($this->expectCallableOnceWith(['foo' => '1', 'bar' => '2']));
+    }
+
+    public function testSetMultipleWithIterableValuesFromGenerator(): void
+    {
+        $values = (function(): \Generator { yield from ['foo' => '1', 'bar' => '2']; })();
+
+        $this->cache = new ArrayCache();
+        $this->cache->setMultiple($values, 10);
 
         $this->cache
             ->getMultiple(['foo', 'bar'])
@@ -181,6 +205,30 @@ class ArrayCacheTest extends TestCase
 
         $this->cache
             ->deleteMultiple(['foo', 'baz'])
+            ->then($this->expectCallableOnceWith(true));
+
+        $this->cache
+            ->has('foo')
+            ->then($this->expectCallableOnceWith(false));
+
+        $this->cache
+            ->has('bar')
+            ->then($this->expectCallableOnceWith(true));
+
+        $this->cache
+            ->has('baz')
+            ->then($this->expectCallableOnceWith(false));
+    }
+
+    public function testDeleteMultipleWithIterableKeysFromGenerator(): void
+    {
+        $this->cache = new ArrayCache();
+        $this->cache->setMultiple(['foo' => 1, 'bar' => 2, 'baz' => 3]);
+
+        $keys = (function (): \Generator { yield from ['foo', 'baz']; })();
+
+        $this->cache
+            ->deleteMultiple($keys)
             ->then($this->expectCallableOnceWith(true));
 
         $this->cache

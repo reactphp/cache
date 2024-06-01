@@ -106,9 +106,10 @@ interface CacheInterface
      * considered a cache miss.
      *
      * ```php
-     * $cache->getMultiple(['name', 'age'])->then(function (array $values): void {
-     *     $name = $values['name'] ?? 'User';
-     *     $age = $values['age'] ?? 'n/a';
+     * $cache->getMultiple(['name', 'age'])->then(function (iterable $values): void {
+     *     $array = is_array($values) ? $values : iterator_to_array($values);
+     *     $name = $array['name'] ?? 'User';
+     *     $age = $array['age'] ?? 'n/a';
      *
      *     echo $name . ' is ' . $age . PHP_EOL;
      * });
@@ -118,11 +119,11 @@ interface CacheInterface
      * prints some example output. You can use any of the composition provided
      * by [promises](https://github.com/reactphp/promise).
      *
-     * @param string[] $keys A list of keys that can obtained in a single operation.
+     * @param iterable<string> $keys A list of keys that can obtained in a single operation.
      * @param mixed $default Default value to return for keys that do not exist.
-     * @return PromiseInterface<array<string,mixed>> Returns a promise which resolves to an `array` of cached values
+     * @return PromiseInterface<iterable<string,mixed>> Returns a promise which resolves to an `array` of cached values
      */
-    public function getMultiple(array $keys, $default = null): PromiseInterface;
+    public function getMultiple(iterable $keys, $default = null): PromiseInterface;
 
     /**
      * Persists a set of key => value pairs in the cache, with an optional TTL.
@@ -144,19 +145,19 @@ interface CacheInterface
      * This example eventually sets the list of values - the key `foo` to 1 value
      * and the key `bar` to 2. If some of the keys already exist, they are overridden.
      *
-     * @param array<string,mixed> $values A list of key => value pairs for a multiple-set operation.
+     * @param iterable<string,mixed> $values A list of key => value pairs for a multiple-set operation.
      * @param ?float $ttl Optional. The TTL value of this item.
      * @return PromiseInterface<bool> Returns a promise which resolves to `true` on success or `false` on error
      */
-    public function setMultiple(array $values, ?float $ttl = null): PromiseInterface;
+    public function setMultiple(iterable $values, ?float $ttl = null): PromiseInterface;
 
     /**
      * Deletes multiple cache items in a single operation.
      *
-     * @param string[] $keys A list of string-based keys to be deleted.
+     * @param iterable<string> $keys A list of string-based keys to be deleted.
      * @return PromiseInterface<bool> Returns a promise which resolves to `true` on success or `false` on error
      */
-    public function deleteMultiple(array $keys): PromiseInterface;
+    public function deleteMultiple(iterable $keys): PromiseInterface;
 
     /**
      * Wipes clean the entire cache.
