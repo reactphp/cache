@@ -142,7 +142,7 @@ Similarly, an expired cache item (once the time-to-live is expired) is
 considered a cache miss.
 
 ```php
-$cache->getMultiple(['name', 'age'])->then(function (array $values) {
+$cache->getMultiple(['name', 'age'])->then(function (array $values): void {
     $name = $values['name'] ?? 'User';
     $age = $values['age'] ?? 'n/a';
 
@@ -367,6 +367,12 @@ To run the test suite, go to the project root and run:
 
 ```bash
 vendor/bin/phpunit
+```
+
+On top of this, we use PHPStan on max level to ensure type safety across the project:
+
+```bash
+vendor/bin/phpstan
 ```
 
 ## License
