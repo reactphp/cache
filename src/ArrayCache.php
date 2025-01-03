@@ -123,7 +123,7 @@ class ArrayCache implements CacheInterface
         return resolve(true);
     }
 
-    public function getMultiple(array $keys, $default = null): PromiseInterface
+    public function getMultiple(iterable $keys, $default = null): PromiseInterface
     {
         $values = [];
 
@@ -135,7 +135,7 @@ class ArrayCache implements CacheInterface
         return all($values);
     }
 
-    public function setMultiple(array $values, ?float $ttl = null): PromiseInterface
+    public function setMultiple(iterable $values, ?float $ttl = null): PromiseInterface
     {
         foreach ($values as $key => $value) {
             $this->set($key, $value, $ttl);
@@ -144,7 +144,7 @@ class ArrayCache implements CacheInterface
         return resolve(true);
     }
 
-    public function deleteMultiple(array $keys): PromiseInterface
+    public function deleteMultiple(iterable $keys): PromiseInterface
     {
         foreach ($keys as $key) {
             unset($this->data[$key], $this->expires[$key]);

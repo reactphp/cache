@@ -133,7 +133,7 @@ provide guarantees whether or not the item has been removed from cache.
 
 #### getMultiple()
 
-The `getMultiple(string[] $keys, mixed $default = null): PromiseInterface<array>` method can be used to
+The `getMultiple(iterable<string> $keys, mixed $default = null): PromiseInterface<iterable<string,mixed>>` method can be used to
 retrieve multiple cache items by their unique keys.
 
 This method will resolve with an array of cached values on success or with the
@@ -142,9 +142,10 @@ Similarly, an expired cache item (once the time-to-live is expired) is
 considered a cache miss.
 
 ```php
-$cache->getMultiple(['name', 'age'])->then(function (array $values): void {
-    $name = $values['name'] ?? 'User';
-    $age = $values['age'] ?? 'n/a';
+$cache->getMultiple(['name', 'age'])->then(function (iterable $values): void {
+    $array = is_array($values) ? $values : iterator_to_array($values);
+    $name = $array['name'] ?? 'User';
+    $age = $array['age'] ?? 'n/a';
 
     echo $name . ' is ' . $age . PHP_EOL;
 });
@@ -156,7 +157,7 @@ by [promises](https://github.com/reactphp/promise).
 
 #### setMultiple()
 
-The `setMultiple(array $values, ?float $ttl = null): PromiseInterface<bool>` method can be used to
+The `setMultiple(iterable<string,mixed> $values, ?float $ttl = null): PromiseInterface<bool>` method can be used to
 persist a set of key => value pairs in the cache, with an optional TTL.
 
 This method will resolve with `true` on success or `false` when an error
@@ -178,7 +179,7 @@ and the key `bar` to `2`. If some of the keys already exist, they are overridden
 
 #### deleteMultiple()
 
-The `setMultiple(string[] $keys): PromiseInterface<bool>` method can be used to
+The `setMultiple(iterable<string> $keys): PromiseInterface<bool>` method can be used to
 delete multiple cache items in a single operation.
 
 This method will resolve with `true` on success or `false` when an error
